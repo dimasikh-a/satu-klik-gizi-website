@@ -82,7 +82,7 @@ model pemeriksaan {
 
 cara_pengukuran String?
 
-  asi_eksklusif Boolean?
+  asi_eksklusif String?
 
   statusbb String?
 
@@ -98,26 +98,26 @@ cara_pengukuran String?
 
   is_active    Boolean @default(true)
 
+  rekomendasi rekomendasi?
+
   balita balita @relation(fields: [idbalita], references: [idbalita])
-
-  rekomendasi_bb rekomendasi? @relation("RekomendasiBB", fields: [idrekomendasi_bb], references: [idrekomendasi])
-
-  rekomendasi_tb rekomendasi? @relation("RekomendasiTB", fields: [idrekomendasi_tb], references: [idrekomendasi])
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model rekomendasi {
   idrekomendasi Int @id @default(autoincrement())
 
-  indikator String
+  idperiksa Int @unique
 
-  kategori String
+  deskripsi String @db.Text
 
-  deskripsi String
+  created_at DateTime @default(now())
 
-  pemeriksaan_bb pemeriksaan[] @relation("RekomendasiBB")
+  updated_at DateTime @updatedAt
 
-  pemeriksaan_tb pemeriksaan[] @relation("RekomendasiTB")
+  is_active Boolean @default(true)
+  
+  pemeriksaan pemeriksaan @relation(fields: [idperiksa], references: [idperiksa], onDelete: Cascade)
+
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.

@@ -13,58 +13,91 @@ export default async function Page({
 }) {
   const { id } = await params;
 
-  await authorize(PAGE.PEMERIKSAAN, ACTION.UPDATE);
+  await authorize(
+    PAGE.PEMERIKSAAN,
+    ACTION.UPDATE
+  );
 
-  const [pemeriksaan, balita] = await Promise.all([
-    db.pemeriksaan.findUnique({
-      where: {
-        idperiksa: Number(id),
-      },
-      include: {
-        balita: {
-          include: {
-            orang_tua: {
-              select: {
-                nama_ayah: true,
-                nama_ibu: true,
+  const [pemeriksaan, balita] =
+    await Promise.all([
+      // ========================================
+      // DATA PEMERIKSAAN
+      // ========================================
+      db.pemeriksaan.findUnique({
+        where: {
+          idperiksa: Number(id),
+        },
+
+        include: {
+          balita: {
+            include: {
+              orang_tua: {
+                select: {
+                  nama_ayah: true,
+                  nama_ibu: true,
+                },
               },
             },
           },
+
+          // Cek apakah pemeriksaan
+          // sudah memiliki rekomendasi
+          rekomendasi: true,
         },
-      },
-    }),
+      }),
 
-    db.balita.findMany({
-      select: {
-        idbalita: true,
-        nik_anak: true,
-        namaanak: true,
-        jeniskelamin: true,
-        tanggallahir: true,
-        bblahir: true,
-        tblahir: true,
+      // ========================================
+      // DATA BALITA
+      // ========================================
+      db.balita.findMany({
+        select: {
+          idbalita: true,
+          nik_anak: true,
+          namaanak: true,
+          jeniskelamin: true,
+          tanggallahir: true,
+          bblahir: true,
+          tblahir: true,
 
-        orang_tua: {
-          select: {
-            nama_ayah: true,
-            nama_ibu: true,
+          orang_tua: {
+            select: {
+              nama_ayah: true,
+              nama_ibu: true,
+            },
           },
         },
-      },
-      orderBy: {
-        namaanak: "asc",
-      },
-    }),
-  ]);
+
+        orderBy: {
+          namaanak: "asc",
+        },
+      }),
+    ]);
+
+  // ========================================
+  // CEK PEMERIKSAAN
+  // ========================================
 
   if (!pemeriksaan) {
     notFound();
   }
-  const serializedPemeriksaan = serializePemeriksaan(pemeriksaan);
+
+  // ========================================
+  // SERIALIZE DATA
+  // ========================================
+
+  const serializedPemeriksaan =
+    serializePemeriksaan(pemeriksaan);
+
+  // ========================================
+  // RETURN
+  // ========================================
 
   return (
     <div className="p-6">
-      <UpdatePemeriksaan pemeriksaan={serializedPemeriksaan} balita={balita} />
+      <UpdatePemeriksaan
+        pemeriksaan={serializedPemeriksaan}
+        balita={balita}
+      />
     </div>
   );
 }

@@ -11,11 +11,18 @@ import { updateParent } from "@/features/orang-tua/update-parent";
 
 type Props = {
   parent: {
+    id_orang_tua: number;
     nokk: string;
-    namaibu: string;
-    namaayah: string | null;
-    alamat: string | null;
-    notelp: string | null;
+    nama_ibu: string;
+    nama_ayah: string | null;
+    no_telp_hp: string;
+    alamat: string;
+    rt: string;
+    rw: string;
+    is_active: boolean;
+    id_user: number | null;
+    nik_ayah: string | null;
+    nik_ibu: string;
   };
 };
 

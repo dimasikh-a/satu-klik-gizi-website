@@ -1,37 +1,33 @@
 "use server";
 
-import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 
-export async function UpdateRecommendation(
-  id_rekomendasi: number,
-  prevState: any,
+import { db } from "@/lib/db";
+
+export async function updateRecommendation(
+  idperiksa: number,
+  _: unknown,
   formData: FormData
 ) {
-  const rekomendasi =
-    formData.get("rekomendasi")?.toString().trim();
+  const deskripsi = formData
+    .get("deskripsi")
+    ?.toString()
+    .trim();
 
-  const hasilanalisis =
-    formData.get("hasilanalisis")?.toString().trim();
-
-
-  if (
-    !rekomendasi ||
-    !hasilanalisis 
-  ) {
+  if (!deskripsi) {
     return {
-      error: "Semua field wajib diisi",
+      error: "Rekomendasi wajib diisi.",
     };
   }
 
   try {
     await db.rekomendasi.update({
       where: {
-        idrekomendasi: id_rekomendasi,
+        idperiksa: idperiksa,
       },
+
       data: {
-        rekomendasi: rekomendasi,
-        hasilanalisa: hasilanalisis
+        deskripsi,
       },
     });
 
@@ -39,15 +35,23 @@ export async function UpdateRecommendation(
       "/admin/dashboard/data-rekomendasi"
     );
 
+    revalidatePath(
+      "/admin/dashboard/data-pemeriksaan"
+    );
+
     return {
       success:
-        "Data rekomendasi berhasil diperbarui",
+        "Rekomendasi berhasil diperbarui.",
     };
   } catch (error) {
-  console.error("UPDATE REKOMENDASI ERROR:", error);
+    console.error(
+      "UPDATE REKOMENDASI ERROR:",
+      error
+    );
 
-  return {
-    error: "Gagal memperbarui data rekomendasi",
-  };
-}
+    return {
+      error:
+        "Gagal memperbarui rekomendasi.",
+    };
+  }
 }

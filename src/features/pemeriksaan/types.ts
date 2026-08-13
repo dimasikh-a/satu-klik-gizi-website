@@ -1,7 +1,7 @@
 import { Prisma } from "@prisma/client";
 
 /* ============================================================
- * BALITA
+ * BALITA OPTION
  * ============================================================ */
 
 export type BalitaOption = Prisma.balitaGetPayload<{
@@ -24,8 +24,47 @@ export type BalitaOption = Prisma.balitaGetPayload<{
 }>;
 
 /* ============================================================
- * PEMERIKSAAN (SERVER)
- * Digunakan hanya di Server Component / Server Action
+ * PEMERIKSAAN LIST SERVER
+ * ============================================================ */
+
+export type PemeriksaanListServer =
+  Prisma.pemeriksaanGetPayload<{
+    include: {
+      balita: {
+        select: {
+          namaanak: true;
+          nik_anak: true;
+          jeniskelamin: true;
+          tanggallahir: true;
+
+          orang_tua: {
+            select: {
+              nama_ibu: true;
+              nama_ayah: true;
+            };
+          };
+        };
+      };
+
+      rekomendasi: true;
+    };
+  }>;
+
+/* ============================================================
+ * PEMERIKSAAN LIST CLIENT
+ * Decimal -> number
+ * ============================================================ */
+
+export type PemeriksaanList = Omit<
+  PemeriksaanListServer,
+  "bb" | "tb"
+> & {
+  bb: number;
+  tb: number;
+};
+
+/* ============================================================
+ * PEMERIKSAAN DETAIL SERVER
  * ============================================================ */
 
 export type PemeriksaanWithRelations =
@@ -41,28 +80,25 @@ export type PemeriksaanWithRelations =
           };
         };
       };
+
+      rekomendasi: true;
     };
   }>;
 
 /* ============================================================
- * PEMERIKSAAN (CLIENT)
- * Decimal -> number
+ * PEMERIKSAAN DETAIL CLIENT
  * ============================================================ */
 
 export type PemeriksaanClient = Omit<
   PemeriksaanWithRelations,
-  | "bb"
-  | "tb"
-
+  "bb" | "tb"
 > & {
   bb: number;
   tb: number;
-
 };
 
 /* ============================================================
- * SERIALIZER
- * Prisma Decimal -> number
+ * SERIALIZER DETAIL
  * ============================================================ */
 
 export function serializePemeriksaan(
@@ -73,7 +109,28 @@ export function serializePemeriksaan(
 
     bb: Number(data.bb),
     tb: Number(data.tb),
-    cara_pengukuran : String(data.cara_pengukuran)
 
+    cara_pengukuran: String(
+      data.cara_pengukuran ?? ""
+    ),
   };
+}
+
+/* ============================================================
+ * SERIALIZER LIST
+ * ============================================================ */
+
+export function serializePemeriksaanList(
+  data: PemeriksaanListServer[]
+): PemeriksaanList[] {
+  return data.map((item) => ({
+    ...item,
+
+    bb: Number(item.bb),
+    tb: Number(item.tb),
+
+    cara_pengukuran: String(
+      item.cara_pengukuran ?? ""
+    ),
+  }));
 }

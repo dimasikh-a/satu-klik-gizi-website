@@ -40,8 +40,8 @@ export default async function Page({
         balita={{
           ...balita,
 
-          bblahir: balita.bblahir?.toNumber() ?? null,
-          tblahir: balita.tblahir?.toNumber() ?? null,
+          bblahir: balita.bblahir ?? null,
+          tblahir: balita.tblahir ?? null,
         }}
         parents={parents}
       />

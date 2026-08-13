@@ -1,9 +1,12 @@
-import ReportForm from "@/features/dashboard/sections/laporan-section";
+import { authorize } from "@/lib/authorize";
+import { ACTION, PAGE } from "@/lib/permission";
 
-export default async function LaporanPage() {
+import Laporan from "@/features/laporan/laporan";
+
+export default async function Page() {
   return (
-    <div className="bg-[#F7FAFC] flex">
-      <ReportForm></ReportForm>
+    <div className="p-6">
+      <Laporan />
     </div>
   );
 }

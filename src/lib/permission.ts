@@ -1,7 +1,6 @@
-
 export const ROLE = {
   ADMIN: "Admin",
-  Posyandu: "Posyandu",
+  POSYANDU: "Posyandu",
   NAKES: "Nakes",
   ORANG_TUA: "Orang Tua",
 } as const;
@@ -22,6 +21,7 @@ export const ACTION = {
   CREATE: "create",
   UPDATE: "update",
   DELETE: "delete",
+  RECOMMENDATION: "recommendation",
 } as const;
 
 export type Page =
@@ -29,7 +29,31 @@ export type Page =
 
 export type Action =
   (typeof ACTION)[keyof typeof ACTION];
+
+
+// ============================================================
+// PERMISSION TYPE
+// ============================================================
+
+type PagePermission = {
+  view: boolean;
+  create: boolean;
+  update: boolean;
+  delete: boolean;
+  recommendation: boolean;
+};
+
+
+// ============================================================
+// PERMISSION
+// ============================================================
+
 export const PERMISSION = {
+
+  // ============================================================
+  // ADMIN
+  // ============================================================
+
   [ROLE.ADMIN]: {
     dashboard: true,
 
@@ -38,6 +62,7 @@ export const PERMISSION = {
       create: true,
       update: true,
       delete: true,
+      recommendation: false,
     },
 
     balita: {
@@ -45,6 +70,7 @@ export const PERMISSION = {
       create: true,
       update: true,
       delete: true,
+      recommendation: false,
     },
 
     parent: {
@@ -52,6 +78,7 @@ export const PERMISSION = {
       create: true,
       update: true,
       delete: true,
+      recommendation: false,
     },
 
     pemeriksaan: {
@@ -59,6 +86,7 @@ export const PERMISSION = {
       create: true,
       update: true,
       delete: true,
+      recommendation: true,
     },
 
     rekomendasi: {
@@ -66,6 +94,7 @@ export const PERMISSION = {
       create: true,
       update: true,
       delete: true,
+      recommendation: false,
     },
 
     kegiatan: {
@@ -73,16 +102,24 @@ export const PERMISSION = {
       create: true,
       update: true,
       delete: true,
+      recommendation: false,
     },
+
     laporan: {
       view: true,
       create: true,
       update: true,
       delete: true,
+      recommendation: false,
     },
   },
 
-  [ROLE.Posyandu]: {
+
+  // ============================================================
+  // POSYANDU
+  // ============================================================
+
+  [ROLE.POSYANDU]: {
     dashboard: true,
 
     user: false,
@@ -92,6 +129,7 @@ export const PERMISSION = {
       create: true,
       update: true,
       delete: true,
+      recommendation: false,
     },
 
     parent: {
@@ -99,6 +137,7 @@ export const PERMISSION = {
       create: true,
       update: true,
       delete: false,
+      recommendation: false,
     },
 
     pemeriksaan: {
@@ -106,6 +145,7 @@ export const PERMISSION = {
       create: true,
       update: true,
       delete: false,
+      recommendation: false,
     },
 
     rekomendasi: {
@@ -113,6 +153,7 @@ export const PERMISSION = {
       create: false,
       update: false,
       delete: false,
+      recommendation: false,
     },
 
     kegiatan: {
@@ -120,14 +161,22 @@ export const PERMISSION = {
       create: false,
       update: false,
       delete: false,
+      recommendation: false,
     },
+
     laporan: {
       view: false,
       create: false,
       update: false,
       delete: false,
-    }
+      recommendation: false,
+    },
   },
+
+
+  // ============================================================
+  // NAKES
+  // ============================================================
 
   [ROLE.NAKES]: {
     dashboard: true,
@@ -139,6 +188,7 @@ export const PERMISSION = {
       create: false,
       update: false,
       delete: false,
+      recommendation: false,
     },
 
     parent: {
@@ -146,6 +196,7 @@ export const PERMISSION = {
       create: false,
       update: false,
       delete: false,
+      recommendation: false,
     },
 
     pemeriksaan: {
@@ -153,6 +204,7 @@ export const PERMISSION = {
       create: false,
       update: false,
       delete: false,
+      recommendation: true,
     },
 
     rekomendasi: {
@@ -160,6 +212,7 @@ export const PERMISSION = {
       create: true,
       update: true,
       delete: true,
+      recommendation: false,
     },
 
     kegiatan: {
@@ -167,14 +220,22 @@ export const PERMISSION = {
       create: false,
       update: false,
       delete: false,
+      recommendation: false,
     },
+
     laporan: {
       view: false,
       create: false,
       update: false,
       delete: false,
-    }
+      recommendation: false,
+    },
   },
+
+
+  // ============================================================
+  // ORANG TUA
+  // ============================================================
 
   [ROLE.ORANG_TUA]: {
     dashboard: false,
@@ -186,6 +247,7 @@ export const PERMISSION = {
       create: false,
       update: false,
       delete: false,
+      recommendation: false,
     },
 
     parent: {
@@ -193,6 +255,7 @@ export const PERMISSION = {
       create: false,
       update: false,
       delete: false,
+      recommendation: false,
     },
 
     pemeriksaan: {
@@ -200,6 +263,7 @@ export const PERMISSION = {
       create: false,
       update: false,
       delete: false,
+      recommendation: false,
     },
 
     rekomendasi: {
@@ -207,6 +271,7 @@ export const PERMISSION = {
       create: false,
       update: false,
       delete: false,
+      recommendation: false,
     },
 
     kegiatan: {
@@ -214,22 +279,44 @@ export const PERMISSION = {
       create: false,
       update: false,
       delete: false,
+      recommendation: false,
     },
+
     laporan: {
       view: false,
       create: false,
       update: false,
       delete: false,
-    }
+      recommendation: false,
+    },
   },
-} as const;
+
+} satisfies Record<
+  string,
+  {
+    dashboard: boolean;
+
+    user: false | PagePermission;
+    balita: PagePermission;
+    parent: PagePermission;
+    pemeriksaan: PagePermission;
+    rekomendasi: PagePermission;
+    kegiatan: PagePermission;
+    laporan: PagePermission;
+  }
+>;
+
+
+// ============================================================
+// GET PERMISSION
+// ============================================================
 
 export function getPermission(status: string) {
   console.log("STATUS:", status);
+
   return (
     PERMISSION[
       status as keyof typeof PERMISSION
-    ] ??
-    PERMISSION[ROLE.ORANG_TUA]
+    ] ?? PERMISSION[ROLE.ORANG_TUA]
   );
 }

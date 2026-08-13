@@ -1,121 +1,201 @@
 "use client";
-import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from "recharts";
 
-import { EllipsisVertical, CalendarDays, Check } from "lucide-react";
+import {
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+} from "recharts";
 
-const statsData = [
-  {
-    title: "Total Balita",
-    value: 120,
-    description: "Tercatat di Wilayah",
-    color: "border-l-[#FF8A65]",
-  },
-  {
-    title: "Stunting",
-    value: 10,
-    description: "Mengalami Stunting",
-    color: "border-l-[#F4D64E]",
-  },
-  {
-    title: "Berat badan",
-    value: 90,
-    description: "BB Sesuai Umur",
-    color: "border-l-[#4E7BEB]",
-  },
-  {
-    title: "Wasting",
-    value: 5,
-    description: "Mengalami Wasting",
-    color: "border-l-[#F5B458]",
-  },
-  {
-    title: "Obesitas",
-    value: 15,
-    description: "Mengalami Obesitas",
-    color: "border-l-[#9B74E4]",
-  },
-];
+type StatusGizi =
+  | "Gizi Buruk"
+  | "Gizi Kurang"
+  | "Gizi Baik"
+  | "Berisiko Gizi Lebih"
+  | "Gizi Lebih"
+  | "Obesitas";
 
-const chartData = [
-  {
-    name: "BB",
-    value: 75,
-    color: "#4E7BEB",
-  },
-  {
-    name: "Obesitas",
-    value: 12.5,
-    color: "#9B74E4",
-  },
-  {
-    name: "Wasting",
-    value: 4.2,
-    color: "#F5B458",
-  },
-  {
-    name: "Stunting",
-    value: 8.3,
-    color: "#F4D64E",
-  },
-];
+type Props = {
+  totalBalita: number;
+  giziBaik: number;
+  giziKurang: number;
+  giziBuruk: number;
+  berisikoGiziLebih: number;
+  giziLebih: number;
+  obesitas: number;
+};
 
-export default function DashboardSection() {
+export default function DashboardSection({
+  totalBalita,
+  giziBaik,
+  giziKurang,
+  giziBuruk,
+  berisikoGiziLebih,
+  giziLebih,
+  obesitas,
+}: Props) {
+  /*
+   * ============================================================
+   * DATA STATISTIK
+   * ============================================================
+   */
+
+  const statsData = [
+    {
+      title: "Total Balita",
+      value: totalBalita,
+      description: "Tercatat di Wilayah",
+      color: "border-l-[#FF8A65]",
+    },
+    {
+      title: "Gizi Baik",
+      value: giziBaik,
+      description: "Status Gizi Baik",
+      color: "border-l-[#4E7BEB]",
+    },
+    {
+      title: "Gizi Kurang",
+      value: giziKurang,
+      description: "Mengalami Gizi Kurang",
+      color: "border-l-[#F5B458]",
+    },
+    {
+      title: "Gizi Buruk",
+      value: giziBuruk,
+      description: "Mengalami Gizi Buruk",
+      color: "border-l-[#FF8A65]",
+    },
+    {
+      title: "Berisiko Gizi Lebih",
+      value: berisikoGiziLebih,
+      description: "Berisiko Gizi Lebih",
+      color: "border-l-[#F4D64E]",
+    },
+    {
+      title: "Gizi Lebih",
+      value: giziLebih,
+      description: "Mengalami Gizi Lebih",
+      color: "border-l-[#E88B4A]",
+    },
+    {
+      title: "Obesitas",
+      value: obesitas,
+      description: "Mengalami Obesitas",
+      color: "border-l-[#9B74E4]",
+    },
+  ];
+
+  /*
+   * ============================================================
+   * DATA CHART
+   * ============================================================
+   */
+
+  const chartData = [
+    {
+      name: "Gizi Baik",
+      value: giziBaik,
+      color: "#4E7BEB",
+    },
+    {
+      name: "Gizi Kurang",
+      value: giziKurang,
+      color: "#F5B458",
+    },
+    {
+      name: "Gizi Buruk",
+      value: giziBuruk,
+      color: "#FF8A65",
+    },
+    {
+      name: "Berisiko Gizi Lebih",
+      value: berisikoGiziLebih,
+      color: "#F4D64E",
+    },
+    {
+      name: "Gizi Lebih",
+      value: giziLebih,
+      color: "#E88B4A",
+    },
+    {
+      name: "Obesitas",
+      value: obesitas,
+      color: "#9B74E4",
+    },
+  ].filter((item) => item.value > 0);
+
+  /*
+   * ============================================================
+   * TOTAL STATUS GIZI
+   * ============================================================
+   */
+
+  const totalStatusGizi =
+    giziBuruk +
+    giziKurang +
+    giziBaik +
+    berisikoGiziLebih +
+    giziLebih +
+    obesitas;
+
   return (
-    <div className="mt-20">
-      <div className="text-start">
-        <p className="text-teal-600 font-semibold text-3xl">Data Status Gizi Balita</p>
-{/* 
-        <p className="text-slate-600 text-lg leading-6 max-w-3xl mx-auto mt-3">
-          Berbagai layanan kesehatan terintegrasi untuk mendukung tumbuh kembang
-          anak, kesehatan ibu, keluarga, dan masyarakat secara menyeluruh.
-        </p> */}
+    <div className="mt-20 bg-white font-mono">
+      {/* ======================================================
+          TITLE
+      ====================================================== */}
+
+      <div className="mb-8 text-center">
+        <h1 className="text-3xl font-bold tracking-tight text-teal-600">
+          Data Status Gizi Balita
+        </h1>
       </div>
-      <section className="grid grid-cols-12 gap-6 py-6 ">
-        {/* LEFT */}
+
+      <section className="grid grid-cols-12 gap-6">
+        {/* ====================================================
+            LEFT - STATISTIK
+        ==================================================== */}
+
         <div className="col-span-5">
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-2 gap-5">
             {statsData.map((item, index) => (
               <div
                 key={index}
                 className={`
-                bg-white
-                rounded-[28px]
-                border
-                border-gray-200
-                border-l-[5px]
-                ${item.color}
-                px-2
-                py-5
-                shadow-sm
-                flex
-                flex-col
-                items-center
-                justify-center
-                hover:shadow-md
-                transition-all
-                duration-300
-              `}
+                  flex
+                  min-h-[140px]
+                  flex-col
+                  items-center
+                  justify-center
+                  rounded-[26px]
+                  border
+                  border-gray-200
+                  border-l-[5px]
+                  ${item.color}
+                  bg-white
+                  px-4
+                  py-5
+                  shadow-sm
+                  transition-all
+                  duration-300
+                  hover:-translate-y-0.5
+                  hover:shadow-md
+                `}
               >
-                {/* TOP */}
-                <div className="flex items-center justify-center">
-                  <div className="flex items-center justify-center gap-2">
+                {/* TITLE */}
 
-                    {/* TITLE */}
-                    <div>
-                      <h3 className="text-[16px] font-semibold text-slate-800">
-                        {item.title}
-                      </h3>
-                    </div>
-                  </div>
-                </div>
+                <h3 className="text-center text-[16px] font-semibold leading-tight text-slate-800">
+                  {item.title}
+                </h3>
 
                 {/* VALUE */}
-                <div className="mt-1">
-                  <h1 className="text-xl leading-none font-bold text-slate-900 text-center">
-                    {item.value}
-                  </h1>
 
-                  <p className="mt-2 text-sm text-slate-500 text-center">
+                <div className="mt-2 text-center">
+                  <h2 className="text-2xl font-bold leading-none text-slate-900">
+                    {item.value}
+                  </h2>
+
+                  <p className="mt-2 text-sm text-slate-500">
                     {item.description}
                   </p>
                 </div>
@@ -124,86 +204,102 @@ export default function DashboardSection() {
           </div>
         </div>
 
-        {/* RIGHT */}
+        {/* ====================================================
+            RIGHT - CHART
+        ==================================================== */}
+
         <div className="col-span-7">
           <div
             className="
-            bg-white
-            border
-            border-gray-200
-            rounded-[30px]
-            shadow-sm
-            px-6.5
-            py-5
-            h-full
-          "
+              flex
+              h-full
+              min-h-[500px]
+              flex-col
+              rounded-[30px]
+              border
+              border-gray-200
+              bg-white
+              px-7
+              py-6
+              shadow-sm
+            "
           >
             {/* HEADER */}
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-[20px] font-bold text-slate-800">
-                  Distribusi Status Gizi Balita
-                </h2>
 
-                <p className="mt-2 text-[18px] text-slate-500">
-                  Persentase status gizi berdasarkan hasil pemeriksaan terbaru
-                </p>
-              </div>
+            <div>
+              <h2 className="text-[20px] font-bold text-slate-800">
+                Distribusi Status Gizi Balita
+              </h2>
+
+              <p className="mt-2 text-[17px] leading-relaxed text-slate-500">
+                Persentase status gizi berdasarkan hasil pemeriksaan terbaru
+              </p>
             </div>
 
             {/* CHART */}
-            <div className="w-[478px] h-[350px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart
-                  margin={{
-                    right: 70,
-                  }}
-                >
-                  <Pie
-                    data={chartData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={50}
-                    outerRadius={130}
-                    dataKey="value"
-                    paddingAngle={0}
-                    label={({ name, percent }) =>
-                      `${name} ${((percent ?? 0) * 100).toFixed(1)}%`
-                    }
-                    labelLine={false}
-                  >
-                    {chartData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
 
-                  {/* CENTER TEXT */}
-                  <text
-                    x="43%"
-                    y="46%"
-                    textAnchor="middle"
-                    dominantBaseline="middle"
-                    fontSize={14}
-                    fill="#64748b"
-                  >
-                    Total Balita
-                  </text>
+            <div className="flex flex-1 items-center justify-center">
+              {chartData.length > 0 ? (
+                <div className="h-[360px] w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={chartData}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={65}
+                        outerRadius={125}
+                        dataKey="value"
+                        paddingAngle={1}
+                        label={({ name, percent }) =>
+                          `${name} ${((percent ?? 0) * 100).toFixed(1)}%`
+                        }
+                        labelLine={false}
+                      >
+                        {chartData.map((entry, index) => (
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={entry.color}
+                          />
+                        ))}
+                      </Pie>
 
-                  <text
-                    x="43%"
-                    y="54%"
-                    textAnchor="middle"
-                    dominantBaseline="middle"
-                    fontSize={25}
-                    fontWeight={700}
-                    fill="#0f172a"
-                  >
-                    120
-                  </text>
+                      {/* CENTER TEXT */}
 
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
+                      <text
+                        x="50%"
+                        y="47%"
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                        fontSize={14}
+                        fill="#64748b"
+                      >
+                        Total
+                      </text>
+
+                      <text
+                        x="50%"
+                        y="55%"
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                        fontSize={25}
+                        fontWeight={700}
+                        fill="#0f172a"
+                      >
+                        {totalStatusGizi}
+                      </text>
+
+                      <Tooltip />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+              ) : (
+                <div className="flex h-full items-center justify-center">
+                  <p className="text-sm text-slate-500">
+                    Belum ada data hasil gizi.
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>

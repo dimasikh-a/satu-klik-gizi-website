@@ -32,7 +32,7 @@ export async function createPemeriksaan(
   .trim();
 
   const asiEksklusif =
-    formData.get("asi_eksklusif") === "true";
+  formData.get("asi_eksklusif")?.toString() ?? null;
 
     
   if (!idbalita || !tglperiksa || !bb || !tb) {

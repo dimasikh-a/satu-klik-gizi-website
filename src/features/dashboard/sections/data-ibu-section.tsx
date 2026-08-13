@@ -22,7 +22,7 @@ export default function DataMotherPage({
   search,
   currentPage,
   totalPages,
-  status
+  status,
 }: Props) {
   const page_size = 5;
   const [keyword, setKeyword] = useState(search ?? "");
@@ -59,7 +59,9 @@ export default function DataMotherPage({
         {/* HEADER */}
         <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <h1 className="text-2xl font-semibold text-teal-600">Data Orang tua</h1>
+            <h1 className="text-2xl font-semibold text-teal-600">
+              Data Orang tua
+            </h1>
 
             <p className="mt-1 text-base text-slate-600">
               Kelola seluruh data pengguna sistem
@@ -143,6 +145,9 @@ export default function DataMotherPage({
               <thead className="border-b border-slate-200 bg-slate-50">
                 <tr>
                   <th className="px-6 py-5 text-center font-bold text-slate-700">
+                    No
+                  </th>
+                  <th className="px-6 py-5 text-center font-bold text-slate-700">
                     No KK
                   </th>
 
@@ -183,7 +188,7 @@ export default function DataMotherPage({
               </thead>
 
               <tbody>
-                {parents.map((parent) => (
+                {parents.map((parent, index) => (
                   <tr
                     key={parent.nokk}
                     className="
@@ -193,6 +198,9 @@ export default function DataMotherPage({
                       hover:bg-slate-50
                     "
                   >
+                    <td className="px-6 py-6 text-center font-semibold text-slate-900">
+                        {(currentPage - 1) * page_size + index + 1}
+                      </td>
                     {/* ID */}
                     <td className="px-6 py-6 text-center font-semibold text-slate-900">
                       {parent.nokk}
@@ -241,18 +249,15 @@ export default function DataMotherPage({
                             <Link
                               href={`/admin/dashboard/data-orang-tua/edit/${parent.nokk}`}
                               className="
-                              flex
-                              h-12
-                              w-12
-                              items-center
-                              justify-center
-                              rounded-xl
-                              bg-cyan-100
-                              transition
-                              hover:bg-cyan-200
-                            "
+      flex h-10 items-center justify-center
+      rounded-lg px-4
+      bg-cyan-100 text-cyan-700
+      font-medium
+      transition-all duration-200
+      hover:bg-cyan-200 hover:text-cyan-800
+    "
                             >
-                              <Pencil size={20} className="text-cyan-700" />
+                              Edit
                             </Link>
                           )}
                           {/* DELETE */}
@@ -270,17 +275,15 @@ export default function DataMotherPage({
                                   setOpenDelete(true);
                                 }}
                                 className="
-                          flex
-                          h-12
-                          w-12
-                          items-center
-                          justify-center
-                          rounded-xl
-                          bg-red-100
-                          hover:bg-red-200
-                        "
+      flex h-10 items-center justify-center
+      rounded-lg px-4
+      bg-red-100 text-red-700
+      font-medium
+      transition-all duration-200
+      hover:bg-red-200 hover:text-red-800
+    "
                               >
-                                <Trash2 size={20} className="text-red-600" />
+                                Hapus
                               </button>
                             </form>
                           )}

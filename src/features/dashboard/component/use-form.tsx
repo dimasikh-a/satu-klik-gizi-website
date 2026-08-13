@@ -9,9 +9,11 @@ import {
   Eye,
   ChevronDown,
   X,
+  EyeOff
 } from "lucide-react";
 import { Save } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 type UserFormProps = {
   mode: "create" | "edit";
@@ -28,6 +30,7 @@ type UserFormProps = {
 
 export default function UserForm({ mode, user, action }: UserFormProps) {
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <form action={action}>
@@ -147,45 +150,61 @@ export default function UserForm({ mode, user, action }: UserFormProps) {
           </div>
           {/* PASSWORD */}
           {mode === "create" && (
-            <div className="flex flex-col gap-3">
-              <label className="col-span-3 flex items-center gap-3 text-[18px] font-medium text-slate-800">
-                <div className="w-3 h-3 rounded-full bg-cyan-500" />
-                Password
-              </label>
+<div className="flex flex-col gap-3">
+  <label className="col-span-3 flex items-center gap-3 text-[18px] font-medium text-slate-800">
+    <div className="w-3 h-3 rounded-full bg-cyan-500" />
+    Password
+  </label>
 
-              <div className="col-span-9 relative">
-                <Lock
-                  size={21}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
-                />
+  <div className="col-span-9 relative">
+    <Lock
+      size={21}
+      className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+    />
 
-                <input
-                  name="password"
-                  type="password"
-                  placeholder="Masukkan password"
-                  className="
-                  text-black
-                    w-full
-                    h-[50px]
-                    rounded-[5px]
-                    border
-                    border-gray-300
-                    bg-white
-                    pl-11
-                    pr-6
-                    text-[16px]
-                    outline-none
-                    focus:border-cyan-500
-                    transition
-                  "
-                />
+    <input
+      name="password"
+      type={showPassword ? "text" : "password"}
+      placeholder="Masukkan password"
+      className="
+        text-black
+        w-full
+        h-[50px]
+        rounded-[5px]
+        border
+        border-gray-300
+        bg-white
+        pl-11
+        pr-14
+        text-[16px]
+        outline-none
+        focus:border-cyan-500
+        transition
+      "
+    />
 
-                <Eye
-                  size={21}
-                  className="absolute right-6 top-1/2 -translate-y-1/2 text-slate-400"
-                />
-              </div>
-            </div>
+    <button
+      type="button"
+      onClick={() => setShowPassword(!showPassword)}
+      className="
+        absolute
+        right-4
+        top-1/2
+        -translate-y-1/2
+        text-slate-400
+        hover:text-cyan-500
+        transition
+      "
+      aria-label={showPassword ? "Sembunyikan password" : "Tampilkan password"}
+    >
+      {showPassword ? (
+        <EyeOff size={21} />
+      ) : (
+        <Eye size={21} />
+      )}
+    </button>
+  </div>
+</div>
           )}
 
           {/* STATUS */}

@@ -1,33 +1,56 @@
 import { notFound } from "next/navigation";
+
 import { db } from "@/lib/db";
 import { authorize } from "@/lib/authorize";
-import { PAGE, ACTION } from "@/lib/permission";
+import { ACTION, PAGE } from "@/lib/permission";
+
 import UpdateRekomendasi from "./update-rekomendasi";
+
+import { serializePemeriksaan } from "@/features/pemeriksaan/serialize-pemeriksaan";
 
 export default async function Page({
   params,
 }: {
-  params: Promise<{ id: number }>;
+  params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
 
-  const rekomendasi = await db.rekomendasi.findUnique({
-    where: {
-      idrekomendasi: Number(id),
-    },
-  });
-
-  if (!rekomendasi) {
-    notFound();
-  }
   await authorize(
-    PAGE.REKOMENDASI,
+    PAGE.PEMERIKSAAN,
     ACTION.UPDATE
   );
 
+  const pemeriksaan =
+  await db.pemeriksaan.findUnique({
+    where: {
+      idperiksa: Number(id),
+    },
+
+    include: {
+      balita: {
+        include: {
+          orang_tua: {
+            select: {
+              nama_ayah: true,
+              nama_ibu: true,
+            },
+          },
+        },
+      },
+
+      rekomendasi: true,
+    },
+  });
+
+  if (!pemeriksaan) {
+    notFound();
+  }
+
   return (
-        <div className="min-h-screen bg-[#F7FAFC] flex">
-          <UpdateRekomendasi rekomendasi={rekomendasi} />
-        </div>
+    <div className="p-6">
+      <UpdateRekomendasi
+        pemeriksaan={serializePemeriksaan(pemeriksaan)}
+      />
+    </div>
   );
 }

@@ -1,88 +1,108 @@
 "use client";
-import {
-  User
-} from "lucide-react";
+
+import { useActionState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-
-import { useActionState } from "react";
-import { createDataRecommendation } from "@/features/rekomendasi/create-recommendation";
-import { useEffect } from "react";
+import { ClipboardPlus } from "lucide-react";
 import { toast } from "sonner";
-import RekomendasiForm from "../component/form-rekomendasi";
 
-export default function DataUserForm() {
+import RekomendasiForm from "@/features/dashboard/component/form-rekomendasi";
+import { createRekomendasi } from "@/features/rekomendasi/save-recommendation";
+
+import type { PemeriksaanClient } from "@/features/pemeriksaan/types";
+
+type Props = {
+  pemeriksaan: PemeriksaanClient;
+};
+
+type State =
+  | {
+      success: string;
+      error?: never;
+    }
+  | {
+      error: string;
+      success?: never;
+    }
+  | null;
+
+export default function DataRekomendasi({
+  pemeriksaan,
+}: Props) {
   const router = useRouter();
-  const [state, formAction] = useActionState(createDataRecommendation, null);
-  useEffect(() => {
-  if (state?.success) {
-    toast.success(state.success);
-  }
 
-  if (state?.error) {
-    toast.error(state.error);
-  }
-}, [state]);
+  const [state, formAction] = useActionState<
+    State,
+    FormData
+  >(
+    async (
+      prevState: State,
+      formData: FormData
+    ) => {
+      return createRekomendasi(
+        pemeriksaan.idperiksa,
+        prevState,
+        formData
+      );
+    },
+    null
+  );
+
+  useEffect(() => {
+    if (state?.success) {
+      toast.success(state.success);
+
+      setTimeout(() => {
+        router.push(
+          "/admin/dashboard/data-rekomendasi"
+        );
+      }, 1500);
+    }
+
+    if (state?.error) {
+      toast.error(state.error);
+    }
+  }, [state, router]);
+
   return (
-    <section className="min-h-screen w-full mt-20 font-mono">
-      <div
-        className="
-          rounded-[36px]
-          overflow-hidden
-        "
-      >
+    <section className="mt-18 min-h-screen bg-white font-mono">
+      <div className="overflow-hidden rounded-[36px]">
+
         {/* HEADER */}
         <div className="px-6 pt-2 pb-4">
           <div className="flex items-center">
-            {/* ICON */}
-            <div
-              className="
-                w-20
-                h-20
-                rounded-full
-                flex
-                items-center
-                justify-center
 
-              "
-            >
-              <div
-                className="
-                  w-13
-                  h-13
-                  rounded-full
-                  bg-gradient-to-br
-                  from-cyan-500
-                  to-teal-500
-                  flex
-                  items-center
-                  justify-center
-                "
-              >
-                <User size={25} className="text-white" />
+            {/* ICON */}
+            <div className="flex h-20 w-20 items-center justify-center rounded-full">
+              <div className="flex h-13 w-13 items-center justify-center rounded-full bg-gradient-to-br from-cyan-500 to-teal-500">
+                <ClipboardPlus
+                  size={25}
+                  className="text-white"
+                />
               </div>
             </div>
 
             {/* TITLE */}
             <div>
-              <h1 className="text-[20px] font-bold text-slate-900 leading-none">
-                Data Rekomendasi
+              <h1 className="text-[20px] font-bold leading-none text-slate-900">
+                Tambah Rekomendasi
               </h1>
 
               <p className="mt-2 text-[16px] text-slate-500">
-                Lengkapi informasi rekomendasi pada form di bawah ini.
+                Lengkapi rekomendasi berdasarkan hasil
+                pemeriksaan balita.
               </p>
             </div>
           </div>
 
-          {/* LINE */}
-          <div className="h-[1px] bg-gray-200 mt-2" />
+          <div className="mt-2 h-[1px] bg-gray-200" />
         </div>
 
         {/* FORM */}
-          <RekomendasiForm
-      mode="create"
-      action={formAction}
-    />
+        <RekomendasiForm
+          mode="create"
+          pemeriksaan={pemeriksaan}
+          action={formAction}
+        />
       </div>
     </section>
   );

@@ -1,323 +1,384 @@
 "use client";
 
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
+import {
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+} from "recharts";
 
-import { Baby, CheckCircle, Cake, TriangleAlert, Activity } from "lucide-react";
+type StatusGizi =
+  | "Gizi Buruk"
+  | "Gizi Kurang"
+  | "Gizi Baik"
+  | "Berisiko Gizi Lebih"
+  | "Gizi Lebih"
+  | "Obesitas";
 
-const statistikData = {
-  totalBalita: 120,
-  normal: 90,
-  stunting: 10,
-  wasting: 5,
-  obesitas: 15,
+type Props = {
+  totalBalita: number;
+  giziBaik: number;
+  giziKurang: number;
+  giziBuruk: number;
+  berisikoGiziLebih: number;
+  giziLebih: number;
+  obesitas: number;
 };
 
-const chartData = [
-  {
-    name: "BB Sesuai Umur",
-    value: statistikData.normal,
-    color: "#4C7AE6",
-  },
-  {
-    name: "Obesitas",
-    value: statistikData.obesitas,
-    color: "#9B7AE0",
-  },
-  {
-    name: "Wasting",
-    value: statistikData.wasting,
-    color: "#E8B160",
-  },
-  {
-    name: "Stunting",
-    value: statistikData.stunting,
-    color: "#F0D256",
-  },
-];
+export default function DashboardSection({
+  totalBalita,
+  giziBaik,
+  giziKurang,
+  giziBuruk,
+  berisikoGiziLebih,
+  giziLebih,
+  obesitas,
+}: Props) {
+  /*
+   * ============================================================
+   * DATA STATISTIK
+   * ============================================================
+   */
 
-const statistikCards = [
-  {
-    title: "Total Balita",
-    value: statistikData.totalBalita,
-    subtitle: "Tercatat di Wilayah",
-    bg: "bg-white",
-    border: "border-black/20",
-    iconBg: "bg-[#FFE9DE]",
-    icon: <Baby size={34} className="text-[#FF9B73]" />,
-  },
-  {
-    title: "Stunting",
-    value: statistikData.stunting,
-    subtitle: "Mengalami Stunting",
-    bg: "bg-[#F4D657]",
-    border: "border-[#E5C443]",
-    iconBg: "bg-white",
-    icon: <TriangleAlert size={34} className="text-[#F2B705]" />,
-  },
-  {
-    title: "Total Balita",
-    value: statistikData.normal,
-    subtitle: "BB Sesuai Umur",
-    bg: "bg-[#4C7AE6]",
-    border: "border-[#315FD0]",
-    iconBg: "bg-[#73E27D]",
-    icon: <CheckCircle size={34} className="text-white" />,
-    textWhite: true,
-  },
-  {
-    title: "Wasting",
-    value: statistikData.wasting,
-    subtitle: "Mengalami Wasting",
-    bg: "bg-[#E8B160]",
-    border: "border-[#D59B46]",
-    iconBg: "bg-white",
-    icon: <Activity size={34} className="text-[#F58B00]" />,
-  },
-  {
-    title: "Obesitas",
-    value: statistikData.obesitas,
-    subtitle: "Mengalami Obesitas",
-    bg: "bg-[#9B7AE0]",
-    border: "border-[#835FD1]",
-    iconBg: "bg-white",
-    icon: <Cake size={34} className="text-[#D76A2D]" />,
-    textWhite: true,
-  },
-];
+  const statsData = [
+    {
+      title: "Total Balita",
+      value: totalBalita,
+      description: "Tercatat di Wilayah",
+      color: "border-l-[#FF8A65]",
+    },
+    {
+      title: "Gizi Baik",
+      value: giziBaik,
+      description: "Status Gizi Baik",
+      color: "border-l-[#4E7BEB]",
+    },
+    {
+      title: "Gizi Kurang",
+      value: giziKurang,
+      description: "Mengalami Gizi Kurang",
+      color: "border-l-[#F5B458]",
+    },
+    {
+      title: "Gizi Buruk",
+      value: giziBuruk,
+      description: "Mengalami Gizi Buruk",
+      color: "border-l-[#FF8A65]",
+    },
+    {
+      title: "Berisiko Gizi Lebih",
+      value: berisikoGiziLebih,
+      description: "Berisiko Gizi Lebih",
+      color: "border-l-[#F4D64E]",
+    },
+    {
+      title: "Gizi Lebih",
+      value: giziLebih,
+      description: "Mengalami Gizi Lebih",
+      color: "border-l-[#E88B4A]",
+    },
+    {
+      title: "Obesitas",
+      value: obesitas,
+      description: "Mengalami Obesitas",
+      color: "border-l-[#9B74E4]",
+    },
+  ];
 
-export default function StatistikSection() {
+  /*
+   * ============================================================
+   * DATA CHART
+   * ============================================================
+   */
+
+  const chartData = [
+    {
+      name: "Gizi Baik",
+      value: giziBaik,
+      color: "#4E7BEB",
+    },
+    {
+      name: "Gizi Kurang",
+      value: giziKurang,
+      color: "#F5B458",
+    },
+    {
+      name: "Gizi Buruk",
+      value: giziBuruk,
+      color: "#FF8A65",
+    },
+    {
+      name: "Berisiko Gizi Lebih",
+      value: berisikoGiziLebih,
+      color: "#F4D64E",
+    },
+    {
+      name: "Gizi Lebih",
+      value: giziLebih,
+      color: "#E88B4A",
+    },
+    {
+      name: "Obesitas",
+      value: obesitas,
+      color: "#9B74E4",
+    },
+  ].filter((item) => item.value > 0);
+
+  /*
+   * ============================================================
+   * TOTAL STATUS GIZI
+   * ============================================================
+   */
+
+  const totalStatusGizi =
+    giziBuruk +
+    giziKurang +
+    giziBaik +
+    berisikoGiziLebih +
+    giziLebih +
+    obesitas;
+
   return (
-    <>
-      <main className="relative overflow-hidden md:px-10 px-5 pb-25 md:pt-[190px] pt-[170px] bg-[#F7FAFC] font-mono">
-        <div className="max-w-7xl mx-auto">
-          {/* HEADER */}
-          <div className="text-center">
-            <h1 className="text-teal-600 font-semibold text-3xl">Statistik</h1>
+    <div className="mt-20 bg-white px-4 py-16 sm:px-6 sm:py-20 lg:mt-20 lg:px-5 lg:py-20">
+      {/* ======================================================
+          TITLE
+      ====================================================== */}
 
-            <p className="mx-auto max-w-3xl text-sm text-gray-600">
-              Berikut Merupakan Kegiatan Posyandu Beberapa Hari Ke Depan:
-            </p>
-          </div>
+      <div className="mb-6 text-center sm:mb-8">
+        <h1 className="text-2xl font-bold tracking-tight text-teal-600 sm:text-3xl">
+          Data Status Gizi Balita
+        </h1>
+      </div>
 
-          {/* CONTENT */}
-          <div className="flex md:flex-row flex-col-reverse gap-5 items-center justify-center mt-1">
-            {/* LEFT SIDE */}
-            <div className="md:w-[80%] w-full">
-              <div className="md:grid md:grid-cols-2 flex flex-wrap items-center justify-center gap-5">
-                {statistikCards.map((item, index) => (
-                  <div
-                    key={index}
-                    className={`${item.bg} border ${item.border} rounded-[28px] w-[200px] px-4 py-3 shadow-md hover:-translate-y-1 hover:shadow-xl transition-all duration-300`}
-                  >
-                    {/* TOP */}
-                    <div className="flex items-center gap-4">
-                      <div
-                        className={`w-11 h-11 rounded-full ${item.iconBg} flex items-center justify-center shadow-sm`}
-                      >
-                        {item.icon}
-                      </div>
+      {/* ======================================================
+          MAIN GRID
+      ====================================================== */}
 
-                      <div>
-                        <h3
-                          className={` text-base md:text-lg font-bold ${
-                            item.textWhite ? "text-white" : "text-slate-900"
-                          }`}
-                        >
-                          {item.title}
-                        </h3>
-                      </div>
-                    </div>
+      <section
+        className="
+          grid
+          grid-cols-1
+          gap-5
+          lg:grid-cols-12
+          lg:gap-6
+        "
+      >
+        {/* ====================================================
+            LEFT - STATISTIK
+        ==================================================== */}
 
-                    {/* VALUE */}
-                    <div className="mt-1 text-center">
-                      <h2
-                        className={`md:text-2xl text-xl font-black ${
-                          item.textWhite ? "text-white" : "text-black"
-                        }`}
-                      >
-                        {item.value}
-                      </h2>
+        <div className="order-2 col-span-1 lg:order-1 lg:col-span-5">
+          <div className="grid grid-cols-2 gap-4 sm:gap-5">
+            {statsData.map((item, index) => (
+              <div
+                key={index}
+                className={`
+                  flex
+                  min-h-[125px]
+                  flex-col
+                  items-center
+                  justify-center
+                  rounded-[22px]
+                  border
+                  border-gray-200
+                  border-l-[5px]
+                  ${item.color}
+                  bg-white
+                  px-2
+                  py-4
+                  shadow-sm
+                  transition-all
+                  duration-300
+                  hover:-translate-y-0.5
+                  hover:shadow-md
 
-                      <p
-                        className={`mt-1 text-base font-medium ${
-                          item.textWhite ? "text-white/90" : "text-slate-800"
-                        }`}
-                      >
-                        {item.subtitle}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+                  sm:min-h-[140px]
+                  sm:rounded-[26px]
+                  sm:px-4
+                  sm:py-5
+                `}
+              >
+                {/* TITLE */}
 
-            {/* RIGHT SIDE MOBILE*/}
-            <div className="relative w-full md:h-[550px] h-[450px] hidden md:block">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart
-                  margin={{
-                    top: 40,
-                    right: 80,
-                    bottom: 40,
-                    left: 80,
-                  }}
+                <h3
+                  className="
+                    max-w-[140px]
+                    text-center
+                    text-[13px]
+                    font-semibold
+                    leading-tight
+                    text-slate-800
+
+                    sm:text-[16px]
+                  "
                 >
-                  <Pie
-                    data={chartData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={90}
-                    outerRadius={130}
-                    paddingAngle={0}
-                    dataKey="value"
-                    label={({ name, percent }) =>
-                      `${name} ${(percent ?? 0).toFixed(1)}%`
-                    }
-                    labelLine={false}
+                  {item.title}
+                </h3>
+
+                {/* VALUE */}
+
+                <div className="mt-2 text-center">
+                  <h2
+                    className="
+                      text-xl
+                      font-bold
+                      leading-none
+                      text-slate-900
+
+                      sm:text-2xl
+                    "
                   >
-                    {chartData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
-
-              {/* CENTER INFO */}
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="w-[220px] h-[220px] rounded-full flex flex-col items-center justify-center text-center">
-                  <p className="text-slate-500 text-lg font-medium">
-                    Total Balita
-                  </p>
-
-                  <h2 className="text-6xl font-black text-slate-900 mt-2">
-                    {statistikData.totalBalita}
+                    {item.value}
                   </h2>
+
+                  <p
+                    className="
+                      mt-2
+                      text-[11px]
+                      leading-tight
+                      text-slate-500
+
+                      sm:text-sm
+                    "
+                  >
+                    {item.description}
+                  </p>
                 </div>
               </div>
-            </div>
-            <div className="relative w-full h-[350px] md:h-[550px] block md:hidden">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart
-                  margin={{
-                    top: 20,
-                    right: 20,
-                    bottom: 20,
-                    left: 20,
-                  }}
-                >
-                  <Pie
-                    data={chartData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={60}
-                    outerRadius={90}
-                    paddingAngle={0}
-                    dataKey="value"
-                    label={({ name, percent }) =>
-                      `${name} ${((percent ?? 0) * 100).toFixed(1)}%`
-                    }
-                    labelLine={false}
-                  >
-                    {chartData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
-
-              {/* CENTER INFO */}
-              <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                <div className="flex h-[140px] w-[140px] flex-col items-center justify-center rounded-full text-center md:h-[220px] md:w-[220px]">
-                  <p className="text-xs font-medium text-slate-500 md:text-lg">
-                    Total Balita
-                  </p>
-
-                  <h2 className="mt-1 text-3xl font-black text-slate-900 md:mt-2 md:text-6xl">
-                    {statistikData.totalBalita}
-                  </h2>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
-
-          {/* TABLE SECTION */}
-          {/* <section className="mt-5">
-            <div className="bg-white rounded-[32px] shadow-lg border border-slate-100 overflow-hidden">
-              <div className="p-8 border-b border-slate-100">
-                <h2 className="text-3xl font-black text-slate-900">
-                  Statistik Detail Posyandu
-                </h2>
-
-                <p className="text-slate-500 text-lg mt-3">
-                  Ringkasan kondisi kesehatan balita berdasarkan hasil
-                  monitoring.
-                </p>
-              </div>
-
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead className="bg-slate-50">
-                    <tr>
-                      <th className="text-left px-8 py-5 text-slate-700 font-bold text-lg">
-                        Kategori
-                      </th>
-
-                      <th className="text-left px-8 py-5 text-slate-700 font-bold text-lg">
-                        Jumlah
-                      </th>
-
-                      <th className="text-left px-8 py-5 text-slate-700 font-bold text-lg">
-                        Persentase
-                      </th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    {chartData.map((item, index) => {
-                      const percentage = (
-                        (item.value / statistikData.totalBalita) *
-                        100
-                      ).toFixed(1);
-
-                      return (
-                        <tr
-                          key={index}
-                          className="border-t border-slate-100 hover:bg-slate-50 transition"
-                        >
-                          <td className="px-8 py-6">
-                            <div className="flex items-center gap-4">
-                              <div
-                                className="w-5 h-5 rounded-full"
-                                style={{ backgroundColor: item.color }}
-                              />
-
-                              <span className="text-lg font-semibold text-slate-900">
-                                {item.name}
-                              </span>
-                            </div>
-                          </td>
-
-                          <td className="px-8 py-6 text-lg font-bold text-slate-900">
-                            {item.value}
-                          </td>
-
-                          <td className="px-8 py-6 text-lg text-slate-600">
-                            {percentage}%
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </section> */}
         </div>
-      </main>
-    </>
+
+        {/* ====================================================
+            RIGHT - CHART
+        ==================================================== */}
+
+        <div className="order-1 col-span-1 lg:order-2 lg:col-span-7">
+          <div
+            className="
+              flex
+              min-h-[460px]
+              flex-col
+              rounded-[24px]
+              border
+              border-gray-200
+              bg-white
+              px-4
+              py-5
+              shadow-sm
+
+              sm:min-h-[500px]
+              sm:rounded-[30px]
+              sm:px-7
+              sm:py-6
+            "
+          >
+            {/* HEADER */}
+
+            <div>
+              <h2
+                className="
+                  text-[18px]
+                  font-bold
+                  text-slate-800
+
+                  sm:text-[20px]
+                "
+              >
+                Distribusi Status Gizi Balita
+              </h2>
+
+              <p
+                className="
+                  mt-2
+                  max-w-2xl
+                  text-[14px]
+                  leading-relaxed
+                  text-slate-500
+
+                  sm:text-[17px]
+                "
+              >
+                Persentase status gizi berdasarkan hasil pemeriksaan terbaru
+              </p>
+            </div>
+
+            {/* CHART */}
+
+            <div className="flex flex-1 items-center justify-center">
+              {chartData.length > 0 ? (
+                <div
+                  className="
+                    h-[330px]
+                    w-full
+
+                    sm:h-[360px]
+                  "
+                >
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={chartData}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={55}
+                        outerRadius={105}
+                        dataKey="value"
+                        paddingAngle={1}
+                        label={({ name, percent }) =>
+                          `${name} ${((percent ?? 0) * 100).toFixed(1)}%`
+                        }
+                        labelLine={false}
+                      >
+                        {chartData.map((entry, index) => (
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={entry.color}
+                          />
+                        ))}
+                      </Pie>
+
+                      {/* CENTER TEXT */}
+
+                      <text
+                        x="50%"
+                        y="47%"
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                        fontSize={13}
+                        fill="#64748b"
+                      >
+                        Total
+                      </text>
+
+                      <text
+                        x="50%"
+                        y="55%"
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                        fontSize={23}
+                        fontWeight={700}
+                        fill="#0f172a"
+                      >
+                        {totalStatusGizi}
+                      </text>
+
+                      <Tooltip />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+              ) : (
+                <div className="flex h-full items-center justify-center">
+                  <p className="text-sm text-slate-500">
+                    Belum ada data hasil gizi.
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
   );
 }

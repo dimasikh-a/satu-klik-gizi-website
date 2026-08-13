@@ -261,18 +261,15 @@ export default function DataActivitySection({
                         <Link
                           href={`/admin/dashboard/data-kegiatan/edit/${kegiatan.idkegiatan}`}
                           className="
-        flex
-        h-12
-        w-12
-        items-center
-        justify-center
-        rounded-xl
-        bg-cyan-100
-        transition
-        hover:bg-cyan-200
-      "
-                        >
-                          <Pencil size={20} className="text-cyan-700" />
+      flex h-10 items-center justify-center
+      rounded-lg px-4
+      bg-cyan-100 text-cyan-700
+      font-medium
+      transition-all duration-200
+      hover:bg-cyan-200 hover:text-cyan-800
+    "
+                          >
+                            Edit
                         </Link> )}
 
                         {/* DELETE */}
@@ -291,18 +288,16 @@ export default function DataActivitySection({
 
                               setOpenDelete(true);
                             }}
-                            className="
-    flex
-    h-12
-    w-12
-    items-center
-    justify-center
-    rounded-xl
-    bg-red-100
-    hover:bg-red-200
-  "
+    className="
+      flex h-10 items-center justify-center
+      rounded-lg px-4
+      bg-red-100 text-red-700
+      font-medium
+      transition-all duration-200
+      hover:bg-red-200 hover:text-red-800
+    "
                           >
-                            <Trash2 size={20} className="text-red-600" />
+                           Hapus
                           </button>
                         </form>
                         )}
@@ -353,7 +348,7 @@ export default function DataActivitySection({
 
                 params.set("page", String(page));
 
-                router.push(`/admin/dashboard/data-user?${params.toString()}`);
+                router.push(`/admin/dashboard/data-pemeriksaan?${params.toString()}`);
               }}
               className={`
         h-10

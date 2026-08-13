@@ -18,7 +18,7 @@ export async function authorize(
   console.log("SESSION:", session);
 
   if (!session) {
-    redirect("/admin/login");
+    redirect("/login");
   }
 
   const permission = getPermission(

@@ -2,112 +2,159 @@
 
 import Link from "next/link";
 import { Pencil, Search, Trash2, UserPlus } from "lucide-react";
-import { deleteRecommendation } from "@/features/rekomendasi/delete-recommendation";
+import { deleteRekomendasi } from "@/features/rekomendasi/delete-recommendation";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { rekomendasi } from "@prisma/client";
 import { getPermission } from "@/lib/permission";
-import { getRecommendationColor } from "@/lib/recommendation-color";
+
+type Rekomendasi = {
+  idrekomendasi: number;
+
+  deskripsi: string;
+
+  created_at: Date;
+
+  updated_at: Date;
+
+  pemeriksaan: {
+    idperiksa: number;
+
+    tglperiksa: Date;
+
+    bb: number;
+
+    tb: number;
+
+    umur_bulan: number;
+
+    asi_eksklusif: string | null;
+
+    cara_pengukuran: string | null;
+
+    statusbb: string | null;
+
+    statustb: string | null;
+
+    hasilgizi: string | null;
+
+    balita: {
+      namaanak: string;
+
+      nik_anak: string | null;
+
+      jeniskelamin: string;
+
+      tanggallahir: Date;
+
+      orang_tua: {
+        nama_ibu: string;
+
+        nama_ayah: string | null;
+      };
+    };
+  };
+};
 
 type Props = {
-  rekomendasi: rekomendasi[];
+  rekomendasi: Rekomendasi[];
+
   search: string;
+
   currentPage: number;
+
   totalPages: number;
+
   status: string;
 };
 
-export default function DataRecommendationPage({
+export default function DataRekomendasiPage({
   rekomendasi,
   search,
   currentPage,
-  status,
   totalPages,
+  status,
 }: Props) {
   const permission = getPermission(status);
-  const page_size = 5;
+
+  const PAGE_SIZE = 5;
+
   const [keyword, setKeyword] = useState(search ?? "");
+
   const router = useRouter();
-  const canCreate = permission.balita.create;
-  const canUpdate = permission.balita.update;
-  const canDelete = permission.balita.delete;
+
+  const canCreate = permission.rekomendasi.create;
+  const canUpdate = permission.rekomendasi.update;
+  const canDelete = permission.rekomendasi.delete;
 
   const showActionColumn = canUpdate || canDelete;
+
+  const [openDelete, setOpenDelete] = useState(false);
+
+  const [selectedRekomendasi, setSelectedRekomendasi] = useState<{
+    id: number;
+  } | null>(null);
+
   async function handleDelete() {
-    if (!selectedRecommendation) return;
+    if (!selectedRekomendasi) return;
 
     try {
-      await deleteRecommendation(Number(selectedRecommendation.idrekomendasi));
+      await deleteRekomendasi(selectedRekomendasi.id);
 
-      toast.success("Data user berhasil dihapus");
+      toast.success("Data rekomendasi berhasil dihapus.");
 
       setOpenDelete(false);
 
-      window.location.reload();
+      router.refresh();
     } catch {
-      toast.error("Gagal menghapus data user");
+      toast.error("Gagal menghapus data rekomendasi.");
     }
   }
-  const [openDelete, setOpenDelete] = useState(false);
-
-  const [selectedRecommendation, setSelectedRecommendation] = useState<{
-    idrekomendasi: number;
-  } | null>(null);
   return (
-    <div className="mt-20 font-mono w-full min-w-0">
-      <div className="min-h-screen bg-[#F7FAFC] w-full">
-        {/* HEADER */}
-        <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <h1 className="text-2xl font-semibold text-teal-600">Data User</h1>
+    <>
+      <div className="mt-20 font-mono w-full min-w-0">
+        <div className=" bg-[#F7FAFC] w-full">
+          {/* HEADER */}
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <h1 className="text-2xl font-semibold text-teal-600">
+                Data Rekomendasi
+              </h1>
 
-            <p className="mt-1 text-base text-slate-600">
-              Kelola seluruh data rekomendasi
-            </p>
+              <p className="mt-1 text-base text-slate-600">
+                Kelola seluruh data Rekomendasi
+              </p>
+            </div>
           </div>
 
-          {canCreate && (
-            <Link
-              href="/admin/dashboard/data-rekomendasi/tambah-data"
-              className="flex items-center justify-center gap-3 bg-teal-600 hover:opacity-90 transition text-white font-semibold px-4 py-3 rounded-xl shadow-sm"
+          {/* SEARCH */}
+          <div className="mt-4 p-2">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+
+                if (!keyword.trim()) {
+                  router.push("/admin/dashboard/data-user");
+                  return;
+                }
+
+                router.push(
+                  `/admin/dashboard/data-rekomendasi?q=${encodeURIComponent(keyword)}`,
+                );
+              }}
             >
-              <UserPlus size={22} />
-              <span>Tambah Data</span>
-            </Link>
-          )}
-        </div>
+              <div className="relative">
+                <Search
+                  size={18}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                />
 
-        {/* SEARCH */}
-        <div className="mt-4 p-2">
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-
-              if (!keyword.trim()) {
-                router.push("/admin/dashboard/data-rekomendasi");
-                return;
-              }
-
-              router.push(
-                `/admin/dashboard/data-rekomendasi?q=${encodeURIComponent(
-                  keyword,
-                )}`,
-              );
-            }}
-          >
-            <div className="relative">
-              <Search
-                size={18}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-              />
-
-              <input
-                type="text"
-                value={keyword}
-                onChange={(e) => setKeyword(e.target.value)}
-                placeholder="Cari user..."
-                className="
+                <input
+                  type="text"
+                  value={keyword}
+                  onChange={(e) => setKeyword(e.target.value)}
+                  placeholder="Cari user..."
+                  className="
         h-11
         w-[320px]
         text-black
@@ -117,11 +164,11 @@ export default function DataRecommendationPage({
         pl-10
         pr-4
       "
-              />
+                />
 
-              <button
-                type="submit"
-                className="
+                <button
+                  type="submit"
+                  className="
         ml-2
         h-11
         rounded-lg
@@ -130,172 +177,218 @@ export default function DataRecommendationPage({
         text-white
         cursor-pointer
       "
-              >
-                Cari
-              </button>
-            </div>
-          </form>
-        </div>
+                >
+                  Cari
+                </button>
+              </div>
+            </form>
+          </div>
 
-        {/* TABLE */}
-        <div className="mt-5 rounded-[32px] border border-slate-200 bg-white shadow-md">
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[1200px]">
-              <thead className="border-b border-slate-200 bg-slate-50">
-                <tr>
-                  <th className="px-6 py-5 text-center font-bold text-slate-700">
-                    Id Rekomendasi
-                  </th>
+          {/* TABLE */}
+          <div className="mt-5 rounded-[32px] border border-slate-200 bg-white shadow-md">
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[1200px]">
+                <thead className="border-b border-slate-200 bg-slate-50">
+                  <tr> 
+                    <th className="px-6 py-5 text-center font-bold text-slate-700">
+                      No
+                    </th>
+                    <th className="px-6 py-5 text-center font-bold text-slate-700">
+                      Nama Anak
+                    </th>
 
-                  <th className="px-6 py-5 text-center font-bold text-slate-700">
-                    Hasil Analisis
-                  </th>
+                    <th className="px-6 py-5 text-center font-bold text-slate-700">
+                      Umur
+                    </th>
 
-                  <th className="px-6 py-5 text-center font-bold text-slate-700">
-                    Rekomendasi
-                  </th>
+                    <th className="px-6 py-5 text-center font-bold text-slate-700">
+                      BB
+                    </th>
 
-                  {showActionColumn && (
+                    <th className="px-6 py-5 text-center font-bold text-slate-700">
+                      Status BB/U
+                    </th>
+
+                    <th className="px-6 py-5 text-center font-bold text-slate-700">
+                      TB
+                    </th>
+
+                    <th className="px-6 py-5 text-center font-bold text-slate-700">
+                      Status TB/U
+                    </th>
+                    <th className="px-6 py-5 text-center font-bold text-slate-700">
+                      Hasil Gizi
+                    </th>
+                    <th className="px-6 py-5 text-center font-bold text-slate-700">
+                      Cara Pengukuran
+                    </th>
+                    <th className="px-6 py-5 text-center font-bold text-slate-700">
+                      Rekomedasi
+                    </th>
+
                     <th className="px-6 py-5 text-center font-bold text-slate-700">
                       Aksi
                     </th>
-                  )}
-                </tr>
-              </thead>
-
-              <tbody>
-                {rekomendasi.map((rekomendasi, index) => (
-                  <tr
-                    key={rekomendasi.idrekomendasi}
-                    className="
-                      border-b
-                      border-slate-100
-                      transition
-                      hover:bg-slate-50
-                    "
-                  >
-                    {/* ID */}
-                    <td className="px-6 py-6 text-center font-semibold text-slate-900">
-                      {(currentPage - 1) * page_size + index + 1}
-                    </td>
-
-                    {/* HASIL ANALISIS */}
-                    <td className="px-4 py-3">
-                      <span
-                        className={`
-      inline-flex
-      rounded-full
-      px-4
-      py-2
-      text-sm
-      font-semibold
-      ${getRecommendationColor(rekomendasi.kategori)}
-    `}
-                      >
-                        {rekomendasi.kategori}
-                      </span>
-                    </td>
-
-                    {/* REKOMENDASI*/}
-                    <td className="px-6 py-6 text-center text-slate-600">
-                      {rekomendasi.deskripsi}
-                    </td>
-
-                    {/* AKSI */}
-                    {showActionColumn && (
-                      <td className="px-6 py-6">
-                        <div className="flex items-center justify-center gap-3">
-                          {canUpdate && (
-                            <Link
-                              href={`/admin/dashboard/data-rekomendasi/edit/${rekomendasi.idrekomendasi}`}
-                              className="
-            flex
-            h-12
-            w-12
-            items-center
-            justify-center
-            rounded-xl
-            bg-cyan-100
-            transition
-            hover:bg-cyan-200
-          "
-                            >
-                              <Pencil size={20} className="text-cyan-700" />
-                            </Link>
-                          )}
-
-                          {canDelete && (
-                            <form
-                              action={deleteRecommendation.bind(
-                                null,
-                                rekomendasi.idrekomendasi,
-                              )}
-                            >
-                              <button
-                                className="
-              flex
-              h-12
-              w-12
-              items-center
-              justify-center
-              rounded-xl
-              bg-red-100
-              transition
-              hover:bg-red-200
-            "
-                              >
-                                <Trash2 size={20} className="text-red-600" />
-                              </button>
-                            </form>
-                          )}
-                        </div>
-                      </td>
-                    )}
                   </tr>
-                ))}
+                </thead>
 
-                {rekomendasi.length === 0 && (
-                  <tr>
-                    <td
-                      colSpan={showActionColumn ? 8 : 7}
+                <tbody>
+                  {rekomendasi.map((r, index) => (
+                    <tr
+                      key={r.idrekomendasi}
                       className="
-                        py-10
-                        text-center
-                        text-slate-500
-                      "
+        border-b
+        border-slate-100
+        transition
+        hover:bg-slate-50
+      "
                     >
-                      Belum ada data user
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+                      {/* NO */}
+                      <td className="px-6 py-6 text-center text-slate-600">
+                        {(currentPage - 1) * PAGE_SIZE + index + 1}
+                      </td>
+
+                      {/* Nama Anak */}
+                      <td className="px-6 py-6 text-center font-bold text-slate-900">
+                        {r.pemeriksaan.balita.namaanak}
+                      </td>
+
+                      {/* Umur */}
+                      <td className="px-6 py-6 text-center text-slate-600">
+                        {r.pemeriksaan.umur_bulan} Bulan
+                      </td>
+
+                      {/* BB */}
+                      <td className="px-6 py-6 text-center text-slate-600">
+                        {r.pemeriksaan.bb} Kg
+                      </td>
+
+                      {/* Status BB */}
+                      <td className="px-6 py-6 text-center text-slate-600">
+                        {r.pemeriksaan.statusbb ?? "-"}
+                      </td>
+
+                      {/* TB */}
+                      <td className="px-6 py-6 text-center text-slate-600">
+                        {r.pemeriksaan.tb} Cm
+                      </td>
+
+                      {/* Status TB */}
+                      <td className="px-6 py-6 text-center text-slate-600">
+                        {r.pemeriksaan.statustb ?? "-"}
+                      </td>
+
+                      {/* Hasil Gizi */}
+                      <td className="px-6 py-6 text-center text-slate-600">
+                        {r.pemeriksaan.hasilgizi ?? "-"}
+                      </td>
+
+                      {/* Cara Pengukuran */}
+                      <td className="px-6 py-6 text-center text-slate-600">
+                        {r.pemeriksaan.cara_pengukuran ?? "-"}
+                      </td>
+
+                      {/* Rekomendasi */}
+                      <td className="px-6 py-6 text-slate-600">
+                        {r.deskripsi}
+                      </td>
+
+                      {/* AKSI */}
+                      {showActionColumn && (
+                        <td className="px-6 py-6">
+                          <div className="flex items-center justify-center gap-3">
+ {/* EDIT */}
+{canUpdate && (
+  <Link
+    href={`/admin/dashboard/data-rekomendasi/edit/${r.pemeriksaan.idperiksa}`}
+    className="
+      flex h-10 items-center justify-center
+      rounded-lg px-4
+      bg-cyan-100 text-cyan-700
+      font-medium
+      transition-all duration-200
+      hover:bg-cyan-200 hover:text-cyan-800
+    "
+  >
+    Edit
+  </Link>
+)}
+
+{/* DELETE */}
+{canDelete && (
+<form
+  action={deleteRekomendasi.bind(
+    null,
+    r.idrekomendasi
+  )}
+>
+  <button
+    type="submit"
+    className="
+      flex h-10 items-center justify-center
+      rounded-lg
+      bg-red-100 px-4
+      text-sm font-medium
+      text-red-700
+      transition-all duration-200
+      hover:bg-red-200
+      hover:text-red-800
+    "
+  >
+    Hapus
+  </button>
+</form>
+)}
+                          </div>
+                        </td>
+                      )}
+                    </tr>
+                  ))}
+
+                  {rekomendasi.length === 0 && (
+                    <tr>
+                      <td
+                        colSpan={10}
+                        className="
+          py-10
+          text-center
+          text-slate-500
+        "
+                      >
+                        Belum ada data rekomendasi.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-        <div
-          className="
+          <div
+            className="
     mt-8
     flex
     items-center
     justify-center
     gap-2
   "
-        >
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-            <button
-              key={page}
-              onClick={() => {
-                const params = new URLSearchParams();
+          >
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <button
+                key={page}
+                onClick={() => {
+                  const params = new URLSearchParams();
 
-                if (search) {
-                  params.set("q", search);
-                }
+                  if (search) {
+                    params.set("q", search);
+                  }
 
-                params.set("page", String(page));
+                  params.set("page", String(page));
 
-                router.push(`/admin/dashboard/data-rekomendasi?${params.toString()}`);
-              }}
-              className={`
+                  router.push(
+                    `/admin/dashboard/data-rekomendasi?${params.toString()}`,
+                  );
+                }}
+                className={`
         h-10
         w-10
         rounded-lg
@@ -307,12 +400,13 @@ export default function DataRecommendationPage({
             : "bg-white text-slate-500 border border-slate-500"
         }
       `}
-            >
-              {page}
-            </button>
-          ))}
+              >
+                {page}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

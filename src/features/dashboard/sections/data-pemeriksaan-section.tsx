@@ -1,57 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { Pencil, Search, Trash2, UserPlus } from "lucide-react";
+import { Search, Trash2, UserPlus } from "lucide-react";
 import { deletePemeriksaan } from "@/features/pemeriksaan/delete-pemeriksaan";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { getPermission } from "@/lib/permission";
-
-type Pemeriksaan = {
-  idperiksa: number;
-  tglperiksa: Date;
-  bb: number;
-  tb: number;
-  umur_bulan: number;
-
-  asi_eksklusif: boolean | null;
-
-  cara_pengukuran: string | null;
-  statustb: string | null;
-  statusbb: string | null;
-  hasilgizi: string | null;
-
-  balita: {
-    namaanak: string;
-    nik_anak: string | null;
-    jeniskelamin: string;
-    tanggallahir: Date;
-
-    orang_tua: {
-      nama_ibu: string;
-      nama_ayah: string | null;
-    };
-  };
-
-rekomendasi_bb: {
-    kategori: string;
-    deskripsi: string;
-  } | null;
-
-  rekomendasi_tb: {
-    kategori: string;
-    deskripsi: string;
-  } | null;
-};
+import { PemeriksaanList } from "@/features/pemeriksaan/types";
 
 type Props = {
-  pemeriksa: Pemeriksaan[];
+  pemeriksa: PemeriksaanList[];
   search: string;
   currentPage: number;
   totalPages: number;
   status: string;
-
 };
 
 export default function DataPemeriksaanPage({
@@ -59,16 +22,33 @@ export default function DataPemeriksaanPage({
   search,
   currentPage,
   totalPages,
-  status
+  status,
 }: Props) {
   const permission = getPermission(status);
   const page_size = 5;
   const [keyword, setKeyword] = useState(search ?? "");
   const router = useRouter();
-  const canCreate = permission.pemeriksaan.create;
-  const canUpdate = permission.pemeriksaan.update;
-  const canDelete = permission.pemeriksaan.delete;
-  const showActionColumn = canUpdate || canDelete;
+  const [recommendationFilter, setRecommendationFilter] = useState<
+    "all" | "recommended" | "not-recommended"
+  >("all");
+
+  console.log("========== DEBUG PERMISSION ==========");
+  console.log("STATUS USER:", status);
+  console.log("PERMISSION:", permission);
+  console.log("PEMERIKSAAN:", permission.pemeriksaan);
+  console.log("RECOMMENDATION:", permission.pemeriksaan.recommendation);
+  console.log("======================================");
+
+  const canView = permission.pemeriksaan?.view === true;
+
+  const canCreate = permission.pemeriksaan?.create === true;
+
+  const canUpdate = permission.pemeriksaan?.update === true;
+
+  const canDelete = permission.pemeriksaan?.delete === true;
+
+  const canRecommendation = permission.pemeriksaan?.recommendation === true;
+  const showActionColumn = canUpdate || canDelete || canRecommendation;
   async function handleDelete() {
     if (!selectedPeriksa) return;
 
@@ -89,6 +69,19 @@ export default function DataPemeriksaanPage({
   const [selectedPeriksa, setSelectedPeriksa] = useState<{
     id: number;
   } | null>(null);
+  const filteredPemeriksa = pemeriksa.filter((p) => {
+    const hasRecommendation = p.rekomendasi !== null;
+
+    if (recommendationFilter === "recommended") {
+      return hasRecommendation;
+    }
+
+    if (recommendationFilter === "not-recommended") {
+      return !hasRecommendation;
+    }
+
+    return true;
+  });
   return (
     <>
       <div className="mt-20 font-mono w-full min-w-0">
@@ -105,13 +98,15 @@ export default function DataPemeriksaanPage({
               </p>
             </div>
 
-            {canCreate && ( <Link
-              href="/admin/dashboard/data-pemeriksaan/tambah-data"
-              className="flex items-center justify-center gap-3 bg-teal-600 hover:opacity-90 transition text-white font-semibold px-4 py-3 rounded-xl shadow-sm"
-            >
-              <UserPlus size={22} />
-              <span>Tambah Data</span>
-            </Link> )}
+            {canCreate && (
+              <Link
+                href="/admin/dashboard/data-pemeriksaan/tambah-data"
+                className="flex items-center justify-center gap-3 bg-teal-600 hover:opacity-90 transition text-white font-semibold px-4 py-3 rounded-xl shadow-sm"
+              >
+                <UserPlus size={22} />
+                <span>Tambah Data</span>
+              </Link>
+            )}
           </div>
 
           {/* SEARCH */}
@@ -169,6 +164,62 @@ export default function DataPemeriksaanPage({
                 </button>
               </div>
             </form>
+            <div className="mt-4 flex flex-wrap items-center gap-2">
+              <span className="mr-2 text-sm font-semibold text-slate-600">
+                Filter:
+              </span>
+
+              {/* SEMUA */}
+              <button
+                type="button"
+                onClick={() => setRecommendationFilter("all")}
+                className={`
+      rounded-lg px-4 py-2 text-sm font-medium
+      transition-all duration-200
+      ${
+        recommendationFilter === "all"
+          ? "bg-teal-600 text-white"
+          : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+      }
+    `}
+              >
+                Semua
+              </button>
+
+              {/* SUDAH DIREKOMENDASI */}
+              <button
+                type="button"
+                onClick={() => setRecommendationFilter("recommended")}
+                className={`
+      rounded-lg px-4 py-2 text-sm font-medium
+      transition-all duration-200
+      ${
+        recommendationFilter === "recommended"
+          ? "bg-blue-600 text-white"
+          : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+      }
+    `}
+              >
+                Sudah Direkomendasi
+              </button>
+
+              {/* BELUM DIREKOMENDASI */}
+              <button
+                type="button"
+                onClick={() => setRecommendationFilter("not-recommended")}
+                className={`
+      rounded-lg px-4 py-2 text-sm font-medium
+      transition-all duration-200
+      ${
+        recommendationFilter === "not-recommended"
+          ? "bg-orange-500 text-white"
+          : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+      }
+    `}
+              >
+                Belum Direkomendasi
+              </button>
+            </div>
           </div>
 
           {/* TABLE */}
@@ -177,6 +228,9 @@ export default function DataPemeriksaanPage({
               <table className="w-full min-w-[1200px]">
                 <thead className="border-b border-slate-200 bg-slate-50">
                   <tr>
+                    <th className="px-6 py-5 text-center font-bold text-slate-700">
+                      No
+                    </th>
                     <th className="px-6 py-5 text-center font-bold text-slate-700">
                       Nama Anak
                     </th>
@@ -204,9 +258,6 @@ export default function DataPemeriksaanPage({
                       Hasil Gizi
                     </th>
                     <th className="px-6 py-5 text-center font-bold text-slate-700">
-                      Rekomendasi
-                    </th>
-                    <th className="px-6 py-5 text-center font-bold text-slate-700">
                       Cara Pengukuran
                     </th>
 
@@ -217,126 +268,177 @@ export default function DataPemeriksaanPage({
                 </thead>
 
                 <tbody>
-                  {pemeriksa.map((p, index) => (
-                    <tr
-                      key={p.idperiksa}
-                      className="
-                      border-b
-                      border-slate-100
-                      transition
-                      hover:bg-slate-50
+                  {filteredPemeriksa.map((p, index) => {
+                    // Cek apakah pemeriksaan ini sudah memiliki rekomendasi
+                    const hasRecommendation = p.rekomendasi !== null;
+
+                    return (
+                      <tr
+                        key={p.idperiksa}
+                        className="
+          border-b
+          border-slate-100
+          transition
+          hover:bg-slate-50
+        "
+                      >
+                        <td className="px-6 py-6 text-center font-semibold text-slate-900">
+                          {(currentPage - 1) * page_size + index + 1}
+                        </td>
+                        {/* Nama Anak */}
+                        <td className="px-6 py-6 text-center font-bold text-slate-900">
+                          {p.balita.namaanak}
+                        </td>
+
+                        {/* Umur */}
+                        <td className="px-6 py-6 text-center text-slate-600">
+                          {p.umur_bulan}
+                        </td>
+
+                        {/* BB */}
+                        <td className="px-6 py-6 text-center text-slate-600">
+                          {Number(p.bb)} KG
+                        </td>
+
+                        {/* Status BB */}
+                        <td className="px-6 py-6 text-center text-slate-600">
+                          {p.statusbb ?? "-"}
+                        </td>
+
+                        {/* TB */}
+                        <td className="px-6 py-6 text-center text-slate-600">
+                          {Number(p.tb)} CM
+                        </td>
+
+                        {/* Status TB */}
+                        <td className="px-6 py-6 text-center text-slate-600">
+                          {p.statustb ?? "-"}
+                        </td>
+
+                        {/* Hasil Gizi */}
+                        <td className="px-6 py-6 text-center text-slate-600">
+                          {p.hasilgizi ?? "-"}
+                        </td>
+
+                        {/* Cara Pengukuran */}
+                        <td className="px-6 py-6 text-center text-slate-600">
+                          {p.cara_pengukuran ?? "-"}
+                        </td>
+
+                        {/* AKSI */}
+                        {showActionColumn && (
+                          <td className="px-6 py-5">
+                            <div className="flex items-center justify-center gap-2">
+                              {/* EDIT */}
+                              {canUpdate && (
+                                <Link
+                                  href={`/admin/dashboard/data-pemeriksaan/edit/${p.idperiksa}`}
+                                  className="
+                    flex h-10 items-center justify-center
+                    rounded-lg
+                    bg-cyan-100 px-4
+                    text-sm font-medium text-cyan-700
+                    transition-all duration-200
+                    hover:bg-cyan-200 hover:text-cyan-800
+                  "
+                                >
+                                  Edit
+                                </Link>
+                              )}
+
+                              {/* REKOMENDASI */}
+                              {canRecommendation &&
+                                (hasRecommendation ? (
+                                  <button
+                                    type="button"
+                                    disabled
+                                    className="
+                      flex h-10
+                      items-center
+                      justify-center
+                      rounded-lg
+                      bg-slate-100
+                      px-4
+                      text-sm
+                      font-medium
+                      text-slate-400
+                      cursor-not-allowed
                     "
-                    >
+                                  >
+                                    Sudah Direkomendasi
+                                  </button>
+                                ) : (
+                                  <Link
+                                    href={`/admin/dashboard/data-rekomendasi/edit/${p.idperiksa}`}
+                                    className="
+                      flex h-10
+                      items-center
+                      justify-center
+                      rounded-lg
+                      bg-blue-100
+                      px-4
+                      text-sm
+                      font-medium
+                      text-blue-700
+                      transition-all
+                      duration-200
+                      hover:bg-blue-200
+                      hover:text-blue-800
+                    "
+                                  >
+                                    Rekomendasi
+                                  </Link>
+                                ))}
 
-                      {/* Nama anak */}
-                      <td className="px-6 py-6 text-center font-bold text-slate-900">
-                        {p.balita.namaanak}
-                      </td>
+                              {/* DELETE */}
+                              {canDelete && (
+                                <form
+                                  action={deletePemeriksaan.bind(
+                                    null,
+                                    p.idperiksa,
+                                  )}
+                                >
+                                  <button
+                                    type="submit"
+                                    className="
+                      flex h-10
+                      items-center
+                      justify-center
+                      rounded-lg
+                      bg-red-100
+                      px-4
+                      text-sm
+                      font-medium
+                      text-red-700
+                      transition-all
+                      duration-200
+                      hover:bg-red-200
+                      hover:text-red-800
+                    "
+                                  >
+                                    Hapus
+                                  </button>
+                                </form>
+                              )}
+                            </div>
+                          </td>
+                        )}
+                      </tr>
+                    );
+                  })}
 
-                      {/* Umur */}
-                      <td className="px-6 py-6 text-center text-slate-600">
-                        {p.umur_bulan}
-                      </td>
-
-                      {/* BB */}
-                      <td className="px-6 py-6 text-center text-slate-600">
-                        {p.bb} KG
-                      </td>
-
-                      {/*Status BB */}
-                      <td className="px-6 py-6 text-center text-slate-600">
-                        {p.statusbb}
-                      </td>
-
-                      {/* TB */}
-                      <td className="px-6 py-6 text-center text-slate-600">
-                        {p.tb} CM 
-                      </td>
-
-                      {/* Status TB */}
-                      <td className="px-6 py-6 text-center text-slate-600">
-                        {p.statustb}
-                      </td>
-                      {/* Hasil Gizi*/}
-                      <td className="px-6 py-6 text-center text-slate-600">
-                        {p.hasilgizi ?? "-"}
-                      </td>
-                      {/* Rekomendasi */}
-                      <td className="px-6 py-6 text-center text-slate-600">
-                        {p.statustb ?? "-"}
-                      </td>
-                      {/* Cara pengukuran */}
-                      <td className="px-6 py-6 text-center text-slate-600">
-                        {p.cara_pengukuran ?? "-"}
-                      </td>
-
-                      {/* AKSI */}
-                      {showActionColumn && (
-                      <td className="px-6 py-6">
-                        <div className="flex items-center justify-center gap-3">
-                          
-                          {/* EDIT */}
-                          {canUpdate && (
-                          <Link
-                            href={`/admin/dashboard/data-pemeriksaan/edit/${p.idperiksa}`}
-                            className="
-                              flex
-                              h-12
-                              w-12
-                              items-center
-                              justify-center
-                              rounded-xl
-                              bg-cyan-100
-                              transition
-                              hover:bg-cyan-200
-                            "
-                          >
-                            <Pencil size={20} className="text-cyan-700" />
-                          </Link>
-                          )}
-
-                          {/* DELETE */}
-                          {canDelete && ( 
-                          <form action={deletePemeriksaan.bind(null, p.idperiksa)}>
-                            <button
-                              onClick={() => {
-                                setSelectedPeriksa({
-                                  id: p.idperiksa,
-                                });
-
-                                setOpenDelete(true);
-                              }}
-                              className="
-                              flex
-                              h-12
-                              w-12
-                              items-center
-                              justify-center
-                              rounded-xl
-                              bg-red-100
-                              hover:bg-red-200
-                            "
-                            >
-                              <Trash2 size={20} className="text-red-600" />
-                            </button>
-                          </form> )}
-                        </div>
-                      </td>
-                      )}
-                    </tr>
-                  ))}
-
-                  {pemeriksa.length === 0 && (
+                  {/* DATA KOSONG */}
+                  {filteredPemeriksa.length === 0 && (
                     <tr>
                       <td
-                        colSpan={7}
+                        colSpan={9}
                         className="
-                        py-10
-                        text-center
-                        text-slate-500
-                      "
+          py-10
+          text-center
+          text-slate-500
+        "
                       >
-                        Belum ada data user
+                        Belum ada data pemeriksaan
                       </td>
                     </tr>
                   )}
@@ -366,7 +468,7 @@ export default function DataPemeriksaanPage({
                   params.set("page", String(page));
 
                   router.push(
-                    `/admin/dashboard/data-user?${params.toString()}`,
+                    `/admin/dashboard/data-pemeriksaan?${params.toString()}`,
                   );
                 }}
                 className={`

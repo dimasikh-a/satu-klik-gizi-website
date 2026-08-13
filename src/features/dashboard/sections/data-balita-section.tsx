@@ -10,9 +10,7 @@ import { getPermission } from "@/lib/permission";
 import { balita } from "@prisma/client";
 import { getBalita } from "@/features/balita/get-balita";
 
-type Balita = Awaited<
-  ReturnType<typeof getBalita>
->["balitas"][number];
+type Balita = Awaited<ReturnType<typeof getBalita>>["balitas"][number];
 
 type Props = {
   balitas: Balita[];
@@ -31,6 +29,7 @@ export default function DataBabyPage({
   const permission = getPermission(status);
   const [keyword, setKeyword] = useState(search ?? "");
   const router = useRouter();
+  const page_size = 5
   const [openDelete, setOpenDelete] = useState(false);
   const canCreate = permission.balita.create;
   const canUpdate = permission.balita.update;
@@ -91,7 +90,7 @@ export default function DataBabyPage({
                 type="text"
                 value={keyword}
                 onChange={(e) => setKeyword(e.target.value)}
-                placeholder="Cari user..."
+                placeholder="Cari Balita..."
                 className="
         h-11
         w-[320px]
@@ -128,6 +127,9 @@ export default function DataBabyPage({
             <table className="w-full min-w-[1200px]">
               <thead className="border-b border-slate-200 bg-slate-50">
                 <tr>
+                  <th className="px-6 py-5 text-center font-bold text-slate-700">
+                    No
+                  </th>
                   <th className="px-6 py-5 text-center font-bold text-slate-700">
                     NIK Anak
                   </th>
@@ -172,35 +174,38 @@ export default function DataBabyPage({
               </thead>
 
               <tbody>
-{balitas.map((balita) => (
-  <tr
-    key={balita.idbalita}
-    className="
+                {balitas.map((balita, index) => (
+                  <tr
+                    key={balita.idbalita}
+                    className="
       border-b
       border-slate-100
       transition
       hover:bg-slate-50
     "
-  >
-    {/* NIK ANAK */}
-    <td className="px-6 py-6 text-center font-semibold text-slate-900">
-      {balita.nik_anak ?? "-"}
-    </td>
+                  >
+                    <td className="px-6 py-6 text-center font-semibold text-slate-900">
+                      {(currentPage - 1) * page_size + index + 1}
+                    </td>
+                    {/* NIK ANAK */}
+                    <td className="px-6 py-6 text-center font-semibold text-slate-900">
+                      {balita.nik_anak ?? "-"}
+                    </td>
 
-    {/* NO KK */}
-    <td className="px-6 py-6 text-center font-bold text-slate-900">
-      {balita.nokk}
-    </td>
+                    {/* NO KK */}
+                    <td className="px-6 py-6 text-center font-bold text-slate-900">
+                      {balita.nokk}
+                    </td>
 
-    {/* NAMA ANAK */}
-    <td className="px-6 py-6 text-center font-bold text-slate-900">
-      {balita.namaanak}
-    </td>
+                    {/* NAMA ANAK */}
+                    <td className="px-6 py-6 text-center font-bold text-slate-900">
+                      {balita.namaanak}
+                    </td>
 
-    {/* JENIS KELAMIN */}
-    <td className="px-6 py-6 text-center">
-      <span
-        className={`
+                    {/* JENIS KELAMIN */}
+                    <td className="px-6 py-6 text-center">
+                      <span
+                        className={`
           rounded-full
           px-4
           py-2
@@ -214,39 +219,39 @@ export default function DataBabyPage({
               : "bg-pink-100 text-pink-700"
           }
         `}
-      >
-        {balita.jeniskelamin}
-      </span>
-    </td>
+                      >
+                        {balita.jeniskelamin}
+                      </span>
+                    </td>
 
-    {/* TANGGAL LAHIR */}
-    <td className="px-6 py-6 text-center font-medium text-slate-700">
-      {new Intl.DateTimeFormat("id-ID", {
-        day: "2-digit",
-        month: "long",
-        year: "numeric",
-      }).format(balita.tanggallahir)}
-    </td>
+                    {/* TANGGAL LAHIR */}
+                    <td className="px-6 py-6 text-center font-medium text-slate-700">
+                      {new Intl.DateTimeFormat("id-ID", {
+                        day: "2-digit",
+                        month: "long",
+                        year: "numeric",
+                      }).format(balita.tanggallahir)}
+                    </td>
 
-    {/* BB LAHIR */}
-    <td className="px-6 py-6 text-center text-slate-600">
-      {balita.bblahir ? `${balita.bblahir} gram` : "-"}
-    </td>
+                    {/* BB LAHIR */}
+                    <td className="px-6 py-6 text-center text-slate-600">
+                      {balita.bblahir ? `${balita.bblahir} gram` : "-"}
+                    </td>
 
-    {/* TB LAHIR */}
-    <td className="px-6 py-6 text-center font-medium text-slate-700">
-      {balita.tblahir ? `${balita.tblahir} cm` : "-"}
-    </td>
+                    {/* TB LAHIR */}
+                    <td className="px-6 py-6 text-center font-medium text-slate-700">
+                      {balita.tblahir ? `${balita.tblahir} cm` : "-"}
+                    </td>
 
-{/* anak ke */}
-    <td className="px-6 py-6 text-center font-bold text-slate-900">
-      {balita.anakke}
-    </td>
+                    {/* anak ke */}
+                    <td className="px-6 py-6 text-center font-bold text-slate-900">
+                      {balita.anakke}
+                    </td>
 
-{/* IMD */}
-<td className="px-6 py-6 text-center">
-  <span
-    className={`
+                    {/* IMD */}
+                    <td className="px-6 py-6 text-center">
+                      <span
+                        className={`
       rounded-full
       px-4
       py-2
@@ -257,23 +262,23 @@ export default function DataBabyPage({
         balita.imd === true
           ? "bg-emerald-100 text-emerald-700"
           : balita.imd === false
-          ? "bg-red-100 text-red-700"
-          : "bg-slate-100 text-slate-600"
+            ? "bg-red-100 text-red-700"
+            : "bg-slate-100 text-slate-600"
       }
     `}
-  >
-    {balita.imd === true
-      ? "Ya"
-      : balita.imd === false
-      ? "Tidak"
-      : "-"}
-  </span>
-</td>
+                      >
+                        {balita.imd === true
+                          ? "Ya"
+                          : balita.imd === false
+                            ? "Tidak"
+                            : "-"}
+                      </span>
+                    </td>
 
-{/* Buku KIA */}
-<td className="px-6 py-6 text-center">
-  <span
-    className={`
+                    {/* Buku KIA */}
+                    <td className="px-6 py-6 text-center">
+                      <span
+                        className={`
       rounded-full
       px-4
       py-2
@@ -284,76 +289,61 @@ export default function DataBabyPage({
         balita.buku_kia === true
           ? "bg-emerald-100 text-emerald-700"
           : balita.buku_kia === false
-          ? "bg-red-100 text-red-700"
-          : "bg-slate-100 text-slate-600"
+            ? "bg-red-100 text-red-700"
+            : "bg-slate-100 text-slate-600"
       }
     `}
-  >
-    {balita.buku_kia === true
-      ? "Ya"
-      : balita.buku_kia === false
-      ? "Tidak"
-      : "-"}
-  </span>
-</td>
-    {/* AKSI */}
-    {showActionColumn && (
-      <td className="px-6 py-6">
-        <div className="flex items-center justify-center gap-3">
-          {canUpdate && (
-            <Link
-              href={`/admin/dashboard/data-balita/edit/${balita.idbalita}`}
-              className="
-                flex
-                h-12
-                w-12
-                items-center
-                justify-center
-                rounded-xl
-                bg-cyan-100
-                transition
-                hover:bg-cyan-200
-              "
-            >
-              <Pencil
-                size={20}
-                className="text-cyan-700"
-              />
-            </Link>
-          )}
+                      >
+                        {balita.buku_kia === true
+                          ? "Ya"
+                          : balita.buku_kia === false
+                            ? "Tidak"
+                            : "-"}
+                      </span>
+                    </td>
+                    {/* AKSI */}
+                    {showActionColumn && (
+                      <td className="px-6 py-6">
+                        <div className="flex items-center justify-center gap-3">
+                          {canUpdate && (
+                            <Link
+                              href={`/admin/dashboard/data-balita/edit/${balita.idbalita}`}
+                              className="
+      flex h-10 items-center justify-center
+      rounded-lg px-4
+      bg-cyan-100 text-cyan-700
+      font-medium
+      transition-all duration-200
+      hover:bg-cyan-200 hover:text-cyan-800
+    "
+                            >
+                              Edit
+                            </Link>
+                          )}
 
-          {canDelete && (
-            <form
-              action={deleteBalita.bind(
-                null,
-                balita.idbalita
-              )}
-            >
-              <button
-                className="
-                  flex
-                  h-12
-                  w-12
-                  items-center
-                  justify-center
-                  rounded-xl
-                  bg-red-100
-                  transition
-                  hover:bg-red-200
-                "
-              >
-                <Trash2
-                  size={20}
-                  className="text-red-600"
-                />
-              </button>
-            </form>
-          )}
-        </div>
-      </td>
-    )}
-  </tr>
-))}
+                          {canDelete && (
+                            <form
+                              action={deleteBalita.bind(null, balita.idbalita)}
+                            >
+                              <button
+                                className="
+      flex h-10 items-center justify-center
+      rounded-lg px-4
+      bg-red-100 text-red-700
+      font-medium
+      transition-all duration-200
+      hover:bg-red-200 hover:text-red-800
+    "
+                              >
+                                Hapus
+                              </button>
+                            </form>
+                          )}
+                        </div>
+                      </td>
+                    )}
+                  </tr>
+                ))}
 
                 {balitas.length === 0 && (
                   <tr>

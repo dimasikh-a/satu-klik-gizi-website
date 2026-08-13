@@ -29,8 +29,8 @@ export async function updatePemeriksaan(
   ?.toString()
   .trim();
 
-  const asiEksklusif =
-    formData.get("asi_eksklusif") === "true";
+   const asiEksklusif =
+   formData.get("asi_eksklusif")?.toString() ?? null;
 
   if (!idbalita || !tglperiksa || !bb || !tb) {
     return {

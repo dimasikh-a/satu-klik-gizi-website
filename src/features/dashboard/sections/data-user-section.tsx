@@ -245,19 +245,16 @@ export default function DataUserSection({
                           {/* EDIT */}
                           <Link
                             href={`/admin/dashboard/data-user/edit/${user.id_user}`}
-                            className="
-        flex
-        h-12
-        w-12
-        items-center
-        justify-center
-        rounded-xl
-        bg-cyan-100
-        transition
-        hover:bg-cyan-200
-      "
+                                className="
+      flex h-10 items-center justify-center
+      rounded-lg px-4
+      bg-cyan-100 text-cyan-700
+      font-medium
+      transition-all duration-200
+      hover:bg-cyan-200 hover:text-cyan-800
+    "
                           >
-                            <Pencil size={20} className="text-cyan-700" />
+                            Edit
                           </Link>
 
                           {/* DELETE */}
@@ -271,18 +268,16 @@ export default function DataUserSection({
 
                                 setOpenDelete(true);
                               }}
-                              className="
-    flex
-    h-12
-    w-12
-    items-center
-    justify-center
-    rounded-xl
-    bg-red-100
-    hover:bg-red-200
-  "
+                                className="
+      flex h-10 items-center justify-center
+      rounded-lg px-4
+      bg-red-100 text-red-700
+      font-medium
+      transition-all duration-200
+      hover:bg-red-200 hover:text-red-800
+    "
                             >
-                              <Trash2 size={20} className="text-red-600" />
+                              Hapus
                             </button>
                           </form>
                         </div>

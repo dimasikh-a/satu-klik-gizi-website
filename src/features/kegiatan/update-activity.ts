@@ -67,19 +67,30 @@ export async function updateUser(
       `/uploads/kegiatan/${fileName}`;
   }
 
-  try {
-    await db.users.update({
-      where: {
-        id_user: id,
-      },
-      data: {
-        foto: fotoPath,
-        judul_kegiatan: judul_kegiatan,
-        tanggal_pelaksanaan: tanggal_pelaksanaan,
-        jam: jam,
-        keterangan: keterangan,
-      },
-    });
+ try {
+  await db.kegiatan.update({
+    where: {
+      idkegiatan: id,
+    },
+
+    data: {
+      foto: fotoPath,
+      judul_kegiatan,
+      tanggal_pelaksanaan,
+      jam,
+      keterangan,
+    },
+  });
+
+  // lanjut...
+} catch (error) {
+  console.error(
+    "UPDATE KEGIATAN ERROR:",
+    error
+  );
+
+  // ...
+}
 
     revalidatePath(
       "/admin/dashboard/data-kegiatan"
@@ -89,11 +100,4 @@ export async function updateUser(
       success:
         "Data user berhasil diperbarui",
     };
-  } catch (error) {
-    console.error("UPDATE USER ERROR:", error);
-
-    return {
-      error: "Gagal memperbarui kegiatan",
-    };
-  }
-}
+  } 

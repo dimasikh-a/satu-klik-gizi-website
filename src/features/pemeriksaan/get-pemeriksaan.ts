@@ -49,49 +49,37 @@ export async function getPemeriksaan(
     where,
   });
 
-  const data = await db.pemeriksaan.findMany({
-    where,
+const data = await db.pemeriksaan.findMany({
+  where,
 
-    include: {
-      balita: {
-        select: {
-          namaanak: true,
-          nik_anak: true,
-          jeniskelamin: true,
-          tanggallahir: true,
+  include: {
+    balita: {
+      select: {
+        namaanak: true,
+        nik_anak: true,
+        jeniskelamin: true,
+        tanggallahir: true,
 
-          orang_tua: {
-            select: {
-              nama_ibu: true,
-              nama_ayah: true,
-            },
+        orang_tua: {
+          select: {
+            nama_ibu: true,
+            nama_ayah: true,
           },
         },
       },
-
-      rekomendasi_bb: {
-        select: {
-          kategori: true,
-          deskripsi: true,
-        },
-      },
-
-      rekomendasi_tb: {
-        select: {
-          kategori: true,
-          deskripsi: true,
-        },
-      },
     },
 
-    orderBy: {
-      idperiksa: "desc",
-    },
+    rekomendasi: true,
+  },
 
-    skip: (page - 1) * PAGE_SIZE,
+  orderBy: {
+    idperiksa: "desc",
+  },
 
-    take: PAGE_SIZE,
-  });
+  skip: (page - 1) * PAGE_SIZE,
+
+  take: PAGE_SIZE,
+});
 
   const pemeriksaan = data.map((item) => ({
     ...item,

@@ -16,11 +16,8 @@ export function serializePemeriksaan(
 
     bb: Number(data.bb),
     tb: Number(data.tb),
-
-  
   };
 }
-
 /**
  * Serialize array pemeriksaan.
  */

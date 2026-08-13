@@ -79,9 +79,11 @@ export default function PemeriksaanForm({
   // ==========================
   // ASI Eksklusif
   // ==========================
-  const [asiEksklusif, setAsiEksklusif] = useState<boolean | null>(
-    periksa?.asi_eksklusif ?? null,
+const [asiEksklusif, setAsiEksklusif] =
+  useState<string>(
+    periksa?.asi_eksklusif ?? ""
   );
+  const bulanASI = [0, 1, 2, 3, 4, 5];
 
   const [bulanAsi, setBulanAsi] = useState<number[]>([]);
 
@@ -472,54 +474,39 @@ export default function PemeriksaanForm({
                         </div>
           </div>
 
-          <div className="flex gap-3">
-            <label className="col-span-3 flex items-center gap-3 text-[17px] font-medium text-slate-800">
-              <div className="w-3 h-3 rounded-full bg-cyan-500" />
-              Asi Eksklusif
-            </label>
-            {/* asi ekslusif */}
-            <select
-              name="asi_eksklusif"
-              className=" text-black
-              border
-              text-[15px]
-                    border-gray-300
-                    bg-white"
-              onChange={(e) => {
-                const value = e.target.value === "true";
+<div className="space-y-3">
+  <label className="flex items-center gap-3 text-[17px] font-medium text-slate-800">
+    <div className="h-3 w-3 rounded-full bg-cyan-500" />
+    ASI Eksklusif
+  </label>
 
-                setAsiEksklusif(value);
+  <div className="flex flex-wrap gap-5 text-black">
+    {bulanASI.map((bulan) => (
+      <label
+        key={bulan}
+        className="flex items-center gap-2"
+      >
+        <input
+          type="radio"
+          name="asi_eksklusif"
+          value={bulan}
+          checked={asiEksklusif === String(bulan)}
+          onChange={(e) =>
+            setAsiEksklusif(e.target.value)
+          }
+        />
 
-                if (!value) {
-                  setBulanAsi([]);
-                }
-              }}
-            >
-              <option value="">Pilih</option>
-              <option value="true">Ya</option>
-              <option value="false">Tidak</option>
-            </select>
-          </div>
+        {bulan} Bulan
+      </label>
+    ))}
+  </div>
 
-          <div className="flex gap-4 flex-wrap">
-            {bulan.map((item) => (
-              <label key={item} className="flex items-center text-black gap-2">
-                <input
-                  type="checkbox"
-                  disabled={!asiEksklusif}
-                  checked={bulanAsi.includes(item)}
-                  onChange={(e) => {
-                    if (e.target.checked) {
-                      setBulanAsi((prev) => [...prev, item]);
-                    } else {
-                      setBulanAsi((prev) => prev.filter((b) => b !== item));
-                    }
-                  }}
-                />
-                {item} Bulan
-              </label>
-            ))}
-          </div>
+  <p className="text-sm text-gray-500">
+    Kosongkan apabila anak tidak mendapatkan
+    ASI Eksklusif.
+  </p>
+</div>
+
           <input
             type="hidden"
             name="idbalita"
@@ -529,60 +516,45 @@ export default function PemeriksaanForm({
       </div>
 
       {/* FOOTER BUTTON */}
-      <div
-        className="
-            py-3
-            flex
-            gap-8
-            items-center
-            justify-center
-          "
-      >
-        <button
-          type="button"
-          onClick={() => router.push("/admin/dashboard/data-pemeriksaan")}
-          className="
-                h-[45px]
-                px-5
-                rounded-[6px]
-                border-2
-                border-cyan-500
-                text-cyan-500
-                text-[15px]
-                font-semibold
-                flex
-                items-center
-                gap-2
-                hover:bg-cyan-50
-                transition
-              "
-        >
-          <X size={28} />
-          Batal
-        </button>
-        <button
-          className="
-                h-[45px]
-                px-5
-                rounded-[5px]
-                bg-gradient-to-r
-                from-cyan-500
-                to-teal-500
-                text-white
-                text-[15px]
-                font-semibold
-                flex
-                items-center
-                gap-2
-                shadow-lg
-                hover:scale-[1.02]
-                transition
-              "
-        >
-          <Save size={28} />
-          {mode === "create" ? "Simpan Data" : "Update Data"}
-        </button>
-      </div>
+<div className="flex items-center justify-center gap-4 py-4">
+  {/* BATAL */}
+  <button
+    type="button"
+    onClick={() =>
+      router.push("/admin/dashboard/data-pemeriksaan")
+    }
+    className="
+      flex h-10 items-center justify-center
+      rounded-lg px-5
+      border border-cyan-500
+      bg-white
+      text-cyan-700
+      font-medium
+      transition-all duration-200
+      hover:bg-cyan-50
+    "
+  >
+    <X size={18} className="mr-2" />
+    Batal
+  </button>
+
+  {/* SIMPAN / UPDATE */}
+  <button
+    type="submit"
+    className="
+      flex h-10 items-center justify-center
+      rounded-lg px-5
+      bg-cyan-600
+      text-white
+      font-medium
+      transition-all duration-200
+      hover:bg-cyan-700
+    "
+  >
+    <Save size={18} className="mr-2" />
+    {mode === "create" ? "Simpan Data" : "Update Data"}
+  </button>
+</div>
     </form>
   );
 }
