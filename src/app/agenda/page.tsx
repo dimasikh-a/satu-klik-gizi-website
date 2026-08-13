@@ -1,0 +1,15 @@
+import FooterBanner from "@/features/landing/component/footer";
+import Navbar from "@/features/landing/component/navbar";
+import AgendaSection from "@/features/landing/sections/agenda-section";
+import { getAgenda } from "@/features/landing/get-agenda";
+
+export default async function AgendaPage (){
+const agendas = await getAgenda();
+    return (
+        <>
+        <Navbar></Navbar>
+        <AgendaSection agenda={agendas} ></AgendaSection>
+        <FooterBanner></FooterBanner>
+        </>
+    )
+}

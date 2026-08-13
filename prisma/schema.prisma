@@ -1,0 +1,179 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model balita {
+  idbalita Int @id @default(autoincrement())
+
+  id_orang_tua Int
+
+  nokk String
+
+  nik_anak String? @unique
+
+  namaanak String
+
+  jeniskelamin String
+
+  tanggallahir DateTime @db.Date
+
+  bblahir Int?
+
+  tblahir Int?
+
+  anakke Int?
+
+  imd Boolean?
+
+  buku_kia Boolean?
+
+  is_active Boolean @default(true)
+
+  orang_tua orang_tua @relation(fields: [id_orang_tua], references: [id_orang_tua])
+
+  pemeriksaan pemeriksaan[]
+}
+
+model orang_tua {
+
+  id_orang_tua Int @id @default(autoincrement())
+
+  id_user      Int? @unique
+
+  nokk         String @unique
+
+  nik_ayah     String?
+
+  nama_ayah    String?
+
+  nik_ibu      String
+
+  nama_ibu     String
+
+  no_telp_hp   String
+
+  alamat       String
+
+  rt           String
+
+  rw           String
+
+  is_active    Boolean @default(true)
+
+user users? @relation(fields: [id_user], references: [id_user])
+
+  balita balita[]
+}
+
+model pemeriksaan {
+  idperiksa Int @id @default(autoincrement())
+
+  idbalita Int
+
+  tglperiksa DateTime @db.Date
+
+  bb Decimal @db.Decimal(5,2)
+
+  tb Decimal @db.Decimal(5,2)
+
+cara_pengukuran String?
+
+  asi_eksklusif Boolean?
+
+  statusbb String?
+
+  statustb String?
+
+  hasilgizi String?
+
+  umur_bulan Int
+
+  idrekomendasi_bb Int?
+
+  idrekomendasi_tb Int?
+
+  is_active    Boolean @default(true)
+
+  balita balita @relation(fields: [idbalita], references: [idbalita])
+
+  rekomendasi_bb rekomendasi? @relation("RekomendasiBB", fields: [idrekomendasi_bb], references: [idrekomendasi])
+
+  rekomendasi_tb rekomendasi? @relation("RekomendasiTB", fields: [idrekomendasi_tb], references: [idrekomendasi])
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model rekomendasi {
+  idrekomendasi Int @id @default(autoincrement())
+
+  indikator String
+
+  kategori String
+
+  deskripsi String
+
+  pemeriksaan_bb pemeriksaan[] @relation("RekomendasiBB")
+
+  pemeriksaan_tb pemeriksaan[] @relation("RekomendasiTB")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model users {
+  id_user Int @id @default(autoincrement())
+
+  nama_user String
+
+  no_telp_hp String @unique
+
+  alamat_user String
+
+  jabatan String
+
+  password String
+
+  status String
+
+  is_active Boolean @default(true)
+
+  orang_tua orang_tua?
+}
+
+model kegiatan {
+  idkegiatan          Int      @id @default(autoincrement())
+  foto                String?  @db.VarChar(255)
+  tanggal_pelaksanaan DateTime @db.Date
+  jam                 String   @db.VarChar(10)
+  tempat              String   @db.VarChar(255)
+  keterangan          String?
+  is_active           Boolean  @default(true)
+  created_at          DateTime @default(now())
+  updated_at          DateTime @updatedAt
+  judul_kegiatan      String   @db.VarChar(150)
+}
+
+model who_weight_for_age {
+  id Int @id @default(autoincrement())
+
+  jenis_kelamin String
+
+  umur_bulan Int
+
+  sd String
+
+  nilai Decimal @db.Decimal(5,2)
+}
+
+model who_height_for_age {
+  id Int @id @default(autoincrement())
+
+  jenis_kelamin String
+
+  umur_bulan Int
+
+  sd String
+
+  nilai Decimal @db.Decimal(5,2)
+}
