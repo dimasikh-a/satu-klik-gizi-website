@@ -2,7 +2,8 @@
 
 export default function HomeSection() {
   return (
-    <section className="flex flex-col md:flex-row md:gap-5 gap-3 md:pb-0 md:px-10 px-5 bg-white md:h-[600px] pb-14 md:pt-[120px] pt-[170px]  w-full items-center">
+    <section className="flex flex-col md:flex-row md:gap-5 gap-3 md:pb-16 md:px-10 px-5 h-full  bg-white items-center  pb-14 md:py-[180px] py-[170px]  w-full items-center">
+      <div className="flex justify-center items-center">
       <div>
         <div className="flex md:hidden">
           <video controls className="w-full max-w-[450px] rounded-lg ">
@@ -31,6 +32,7 @@ export default function HomeSection() {
         <video controls className="w-full max-w-[450px] rounded-lg ">
           <source src="/video_1.mp4" type="video/mp4" />
         </video>
+      </div>
       </div>
     </section>
   );
