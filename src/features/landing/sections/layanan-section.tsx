@@ -87,14 +87,14 @@ export default function LayananSection() {
           {layananData.map((item, index) => (
             <div
               key={index}
-              className="group bg-white rounded-[28px] w-[48%] px-3 md:pt-2 md:pb-0 pt-2 pb-0  shadow-md border border-slate-100 hover:-translate-y-2 hover:shadow-2xl transition-all duration-300"
+              className="group bg-white rounded-[28px] w-[48%] px-3 md:pt-2 md:pb-0 pt-2 pb-0 md:w-[30%]  shadow-md border border-slate-100 hover:-translate-y-2 hover:shadow-2xl transition-all duration-300"
             >
               {/* IMAGE */}
               <div className="relative overflow-hidden rounded-2xl">
                 <Image
                   src={item.image}
                   alt={item.title}
-                  className="w-full h-[100px] object-cover group-hover:scale-105 transition duration-500"
+                  className="w-full h-[100px] lg:h-full object-cover group-hover:scale-105 transition duration-500"
                 />
               </div>
 
@@ -107,7 +107,7 @@ export default function LayananSection() {
                     {item.icon}
                   </div>
 
-                  <h3 className="text-[12px] font-bold text-slate-900 text-center md:text-left leading-snug max-w-[220px]">
+                  <h3 className="text-[12px] md:text-lg font-bold text-slate-900 text-center md:text-left leading-snug max-w-[220px]">
                     {item.title}
                   </h3>
                 </div>

@@ -12,7 +12,7 @@ export default function AgendaSection({
 }: AgendaCardProps) {
   return (
     <>
-      <section className="relative overflow-hidden pb-25 md:pt-[190px] pt-[170px] bg-[#F7FAFC]">
+      <section className="relative overflow-hidden pb-25 md:pt-[190px] pt-[170px] bg-[#F7FAFC] md:h-[900px]">
         <div className="mx-auto max-w-7xl px-6">
           {/* Heading */}
           <div className="mb-14 text-center">
