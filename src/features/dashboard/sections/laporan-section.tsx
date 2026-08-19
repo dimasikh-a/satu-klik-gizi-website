@@ -149,7 +149,7 @@ export default function LaporanSection({
   }, [stateAnak, onPreview]);
 
   return (
-    <section className="w-full">
+    <section className="w-full mt-20">
 
       <div>
         <div className="flex items-center gap-3">

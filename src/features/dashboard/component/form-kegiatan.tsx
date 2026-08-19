@@ -198,7 +198,7 @@ export default function KegiatanForm({
                     name="judul_kegiatan"
                     type="text"
                     defaultValue={activity?.judul_kegiatan ?? ""}
-                    placeholder="Masukkan id kegiatan"
+                    placeholder="Masukkan judul kegiatan"
                     className="
                         w-full
                         h-[40px]
