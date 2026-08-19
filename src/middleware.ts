@@ -7,11 +7,11 @@ export function middleware(req: NextRequest) {
     req.nextUrl.pathname.startsWith("/admin/dashboard");
 
   const isLoginRoute =
-    req.nextUrl.pathname === "/admin/login";
+    req.nextUrl.pathname === "/login";
 
   if (isDashboardRoute && !session) {
     return NextResponse.redirect(
-      new URL("/admin/login", req.url)
+      new URL("/login", req.url)
     );
   }
 

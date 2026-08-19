@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Pencil, Search, Trash2, UserPlus } from "lucide-react";
+import {  Search, UserPlus } from "lucide-react";
 import { deleteOrangTua } from "@/features/orang-tua/delete-parent";
 import { useState } from "react";
 import { useRouter } from "next/navigation";

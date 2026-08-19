@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { Pencil, Search, Trash2, UserPlus } from "lucide-react";
+import {  Search, UserPlus } from "lucide-react";
 import { deleteActivity } from "@/features/kegiatan/delete-activity";
-import { Activity, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import Image from "next/image";
@@ -348,7 +348,7 @@ export default function DataActivitySection({
 
                 params.set("page", String(page));
 
-                router.push(`/admin/dashboard/data-pemeriksaan?${params.toString()}`);
+                router.push(`/admin/dashboard/data-kegiatan?${params.toString()}`);
               }}
               className={`
         h-10

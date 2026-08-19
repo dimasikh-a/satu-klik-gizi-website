@@ -23,7 +23,7 @@ export default async function Page({
   const session = await getSession();
 
   if (!session) {
-    redirect("/admin/login");
+    redirect("/login");
   }
 
   const currentPage = Number(page ?? 1);

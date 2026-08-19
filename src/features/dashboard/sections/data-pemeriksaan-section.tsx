@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Search, Trash2, UserPlus } from "lucide-react";
+import { Search, UserPlus } from "lucide-react";
 import { deletePemeriksaan } from "@/features/pemeriksaan/delete-pemeriksaan";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -49,21 +49,6 @@ export default function DataPemeriksaanPage({
 
   const canRecommendation = permission.pemeriksaan?.recommendation === true;
   const showActionColumn = canUpdate || canDelete || canRecommendation;
-  async function handleDelete() {
-    if (!selectedPeriksa) return;
-
-    try {
-      await deletePemeriksaan(selectedPeriksa.id);
-
-      toast.success("Data pemeriksaan berhasil dihapus");
-
-      setOpenDelete(false);
-
-      window.location.reload();
-    } catch {
-      toast.error("Gagal menghapus data pemeriksaan");
-    }
-  }
   const [openDelete, setOpenDelete] = useState(false);
 
   const [selectedPeriksa, setSelectedPeriksa] = useState<{

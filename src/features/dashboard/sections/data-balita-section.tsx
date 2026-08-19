@@ -1,13 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { Pencil, Search, Trash2, UserPlus } from "lucide-react";
+import {  Search, UserPlus } from "lucide-react";
 import { deleteBalita } from "../../balita/delete-balita";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import { getPermission } from "@/lib/permission";
-import { balita } from "@prisma/client";
 import { getBalita } from "@/features/balita/get-balita";
 
 type Balita = Awaited<ReturnType<typeof getBalita>>["balitas"][number];
@@ -385,7 +383,7 @@ export default function DataBabyPage({
                 params.set("page", String(page));
 
                 router.push(
-                  `/admin/dashboard/ddata-balita?${params.toString()}`,
+                  `/admin/dashboard/data-balita?${params.toString()}`,
                 );
               }}
               className={`

@@ -8,13 +8,6 @@ import {
   Tooltip,
 } from "recharts";
 
-type StatusGizi =
-  | "Gizi Buruk"
-  | "Gizi Kurang"
-  | "Gizi Baik"
-  | "Berisiko Gizi Lebih"
-  | "Gizi Lebih"
-  | "Obesitas";
 
 type Props = {
   totalBalita: number;
@@ -125,11 +118,6 @@ export default function DashboardSection({
     },
   ].filter((item) => item.value > 0);
 
-  /*
-   * ============================================================
-   * TOTAL STATUS GIZI
-   * ============================================================
-   */
 
   const totalStatusGizi =
     giziBuruk +
@@ -141,10 +129,6 @@ export default function DashboardSection({
 
   return (
     <div className="mt-20 bg-white font-mono">
-      {/* ======================================================
-          TITLE
-      ====================================================== */}
-
       <div className="mb-8 text-center">
         <h1 className="text-3xl font-bold tracking-tight text-teal-600">
           Data Status Gizi Balita
@@ -152,10 +136,6 @@ export default function DashboardSection({
       </div>
 
       <section className="grid grid-cols-12 gap-6">
-        {/* ====================================================
-            LEFT - STATISTIK
-        ==================================================== */}
-
         <div className="col-span-5">
           <div className="grid grid-cols-2 gap-5">
             {statsData.map((item, index) => (
@@ -203,10 +183,6 @@ export default function DashboardSection({
             ))}
           </div>
         </div>
-
-        {/* ====================================================
-            RIGHT - CHART
-        ==================================================== */}
 
         <div className="col-span-7">
           <div

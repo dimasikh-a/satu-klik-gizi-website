@@ -56,19 +56,11 @@ export default function LaporanSection({
     null
   );
 
-  // ========================================
-  // CEGAH EFFECT DIEKSEKUSI BERULANG
-  // ========================================
-
   const lastPeriodeState =
     useRef<string | null>(null);
 
   const lastAnakState =
     useRef<string | null>(null);
-
-  // ========================================
-  // LAPORAN PERIODE
-  // ========================================
 
   useEffect(() => {
     if (!statePeriode) return;
@@ -117,10 +109,6 @@ export default function LaporanSection({
     }
   }, [statePeriode, onPreview]);
 
-  // ========================================
-  // LAPORAN PER ANAK
-  // ========================================
-
   useEffect(() => {
     if (!stateAnak) return;
 
@@ -162,9 +150,6 @@ export default function LaporanSection({
 
   return (
     <section className="w-full">
-      {/* ========================================
-          HEADER
-      ======================================== */}
 
       <div>
         <div className="flex items-center gap-3">
@@ -197,9 +182,6 @@ export default function LaporanSection({
       </div>
 
       <div className="space-y-8 pt-6">
-        {/* ========================================
-            LAPORAN PERIODE
-        ======================================== */}
 
         <form action={formActionPeriode}>
           <div
@@ -376,9 +358,6 @@ export default function LaporanSection({
           </div>
         </form>
 
-        {/* ========================================
-            LAPORAN PER ANAK
-        ======================================== */}
 
         <form action={formActionAnak}>
           <div
@@ -467,10 +446,6 @@ export default function LaporanSection({
             </div>
           </div>
         </form>
-
-        {/* ========================================
-            INFO
-        ======================================== */}
 
         <div
           className="

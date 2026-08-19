@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Pencil, Search, Trash2, UserPlus } from "lucide-react";
+import {  Search, UserPlus } from "lucide-react";
 import { deleteUser } from "@/features/users/delete-user";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
