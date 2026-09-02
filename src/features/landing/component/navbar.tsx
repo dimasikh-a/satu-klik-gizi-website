@@ -8,7 +8,6 @@ import { useState,useEffect } from "react";
 
 import nusamandiri from "../../../../public/logo universitas nusa mandiri.png";
 import bima from "../../../../public/logo bima.png";
-import kementrian from "../../../../public/Logo Kementerian Pendidikan Tinggi, Sains dan Teknologi-2.png";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -67,7 +66,7 @@ export default function Navbar() {
           {/* Logo */}
           <div className="flex items-center gap-2 md:gap-3">
             <Image
-              src={kementrian}
+              src="/logo-kementerian.png"
               alt="Kementrian"
               width={40}
               height={40}

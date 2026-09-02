@@ -1,0 +1,29 @@
+{
+  "node": {
+    "0098d40b7f0d0d1c7500a2171de879297f9782508a": {
+      "workers": {
+        "app/admin/dashboard/data-orang-tua/page": {
+          "moduleId": 16138,
+          "async": true,
+          "exportedName": "logoutAction",
+          "filename": "src/features/landing/auth/form/logout.ts"
+        }
+      },
+      "exportedName": "logoutAction",
+      "filename": "src/features/landing/auth/form/logout.ts"
+    },
+    "40587f28af2f63c3108d332b3a7604b779d8fd219e": {
+      "workers": {
+        "app/admin/dashboard/data-orang-tua/page": {
+          "moduleId": 16138,
+          "async": true,
+          "exportedName": "deleteOrangTua",
+          "filename": "src/features/orang-tua/delete-parent.ts"
+        }
+      },
+      "exportedName": "deleteOrangTua",
+      "filename": "src/features/orang-tua/delete-parent.ts"
+    }
+  },
+  "edge": {}
+}

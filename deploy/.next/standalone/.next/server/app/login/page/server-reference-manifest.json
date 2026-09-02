@@ -1,0 +1,17 @@
+{
+  "node": {
+    "60212fd63dff5a07f2637d1c803f4a32e9d293adc1": {
+      "workers": {
+        "app/login/page": {
+          "moduleId": 51393,
+          "async": true,
+          "exportedName": "loginAction",
+          "filename": "src/features/landing/auth/form/login.ts"
+        }
+      },
+      "exportedName": "loginAction",
+      "filename": "src/features/landing/auth/form/login.ts"
+    }
+  },
+  "edge": {}
+}

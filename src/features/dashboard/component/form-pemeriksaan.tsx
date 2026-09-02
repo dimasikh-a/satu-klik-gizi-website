@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  CalendarDays,
-  X,
-  Hash,
-  Weight,
-  Ruler,
-} from "lucide-react";
+import { CalendarDays, X, Hash, Weight, Ruler } from "lucide-react";
 import { Save } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -27,8 +21,6 @@ type PemeriksaanFormProps = {
   action: (formData: FormData) => void;
 };
 
-
-
 export default function PemeriksaanForm({
   mode,
   balita,
@@ -41,6 +33,11 @@ export default function PemeriksaanForm({
   // NIK Anak Autocomplete
   // ==========================
   const [searchNik, setSearchNik] = useState(periksa?.balita.nik_anak ?? "");
+  const [tglPeriksa, setTglPeriksa] = useState(
+    periksa?.tglperiksa
+      ? new Date(periksa.tglperiksa).toISOString().split("T")[0]
+      : "",
+  );
 
   const [selectedBalita, setSelectedBalita] = useState<BalitaOption | null>(
     null,
@@ -79,9 +76,8 @@ export default function PemeriksaanForm({
   // ==========================
   // ASI Eksklusif
   // ==========================
-const [asiEksklusif, setAsiEksklusif] =
-  useState<string>(
-    periksa?.asi_eksklusif ?? ""
+  const [asiEksklusif, setAsiEksklusif] = useState<string>(
+    periksa?.asi_eksklusif ?? "",
   );
   const bulanASI = [0, 1, 2, 3, 4, 5];
 
@@ -110,27 +106,24 @@ const [asiEksklusif, setAsiEksklusif] =
                 <input
                   name="tglperiksa"
                   type="date"
-                  defaultValue={
-                    periksa?.tglperiksa
-                      ? new Date(periksa.tglperiksa).toISOString().split("T")[0]
-                      : ""
-                  }
+                  value={tglPeriksa}
+                  onChange={(e) => setTglPeriksa(e.target.value)}
                   placeholder="Masukan Tanggal Periksa"
                   className="
-                    w-full
-                    h-[50px]
-                    rounded-[5px]
-                    border
-                    text-black
-                    border-gray-300
-                    bg-white
-                    pl-10
-                    pr-6
-                    text-[15px]
-                    outline-none
-                    focus:border-cyan-500
-                    transition
-                  "
+    w-full
+    h-[50px]
+    rounded-[5px]
+    border
+    text-black
+    border-gray-300
+    bg-white
+    pl-10
+    pr-6
+    text-[15px]
+    outline-none
+    focus:border-cyan-500
+    transition
+  "
                 />
               </div>
             </div>
@@ -169,18 +162,14 @@ const [asiEksklusif, setAsiEksklusif] =
                     transition
                   "
                 />
-                {showSuggestions &&
-  filteredBalita.length > 0 && (
-    <div className="absolute z-50 mt-1 w-full rounded-md border bg-white shadow-lg">
-
-      {filteredBalita.map((item) => (
-        <button
-          key={item.idbalita}
-          type="button"
-          onClick={() =>
-            handleSelectBalita(item)
-          }
-          className="
+                {showSuggestions && filteredBalita.length > 0 && (
+                  <div className="absolute z-50 mt-1 w-full rounded-md border bg-white shadow-lg">
+                    {filteredBalita.map((item) => (
+                      <button
+                        key={item.idbalita}
+                        type="button"
+                        onClick={() => handleSelectBalita(item)}
+                        className="
             w-full
             px-4
             py-3
@@ -188,13 +177,12 @@ const [asiEksklusif, setAsiEksklusif] =
             text-black
             hover:bg-cyan-50
           "
-        >
-          {item.nik_anak} - {item.namaanak}
-        </button>
-      ))}
-
-    </div>
-)}
+                      >
+                        {item.nik_anak} - {item.namaanak}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -272,7 +260,7 @@ const [asiEksklusif, setAsiEksklusif] =
 
               <div className="col-span-9 relative">
                 <input
-                  name="jeniskelamin"
+                  name="bblahir"
                   value={selectedBalita?.bblahir ?? ""}
                   readOnly
                   className="
@@ -331,32 +319,32 @@ const [asiEksklusif, setAsiEksklusif] =
               </label>
 
               <div className="col-span-9 relative">
-                <input
-                  value={
-                    selectedBalita
-                      ? `${hitungUmurBulan(
-                          selectedBalita.tanggallahir,
-                          new Date(),
-                        )} Bulan`
-                      : ""
-                  }
-                  readOnly
-                  className="
-                    w-full
-                    h-[50px]
-                    rounded-[5px]
-                    border
-                    text-black
-                    border-gray-300
-                    bg-white
-                    pl-10
-                    pr-6
-                    text-[16px]
-                    outline-none
-                    focus:border-cyan-500
-                    transition
-                  "
-                />
+             <input
+  value={
+    selectedBalita && tglPeriksa
+      ? `${hitungUmurBulan(
+          selectedBalita.tanggallahir,
+          new Date(tglPeriksa),
+        )} Bulan`
+      : ""
+  }
+  readOnly
+  className="
+    w-full
+    h-[50px]
+    rounded-[5px]
+    border
+    text-black
+    border-gray-300
+    bg-white
+    pl-10
+    pr-6
+    text-[16px]
+    outline-none
+    focus:border-cyan-500
+    transition
+  "
+/>
               </div>
             </div>
           </div>
@@ -435,23 +423,23 @@ const [asiEksklusif, setAsiEksklusif] =
                 />
               </div>
             </div>
-                        {/* Cara Pengukuran */}
-                        <div className="flex flex-col gap-2 w-full">
-                          <label className="col-span-3 flex items-center gap-3 text-[17px] font-medium text-slate-800">
-                            <div className="w-3 h-3 rounded-full bg-cyan-500" />
-                            Cara Pengukuran
-                          </label>
-            
-                          <div className="col-span-9 relative">
-                            <Ruler
-                              size={21}
-                              className="absolute left-2 top-1/2 -translate-y-1/2 text-slate-400"
-                            />
-            
-                            <select
-                              name="cara_pengukuran"
-                              defaultValue={periksa?.cara_pengukuran ?? ""}
-                              className="
+            {/* Cara Pengukuran */}
+            <div className="flex flex-col gap-2 w-full">
+              <label className="col-span-3 flex items-center gap-3 text-[17px] font-medium text-slate-800">
+                <div className="w-3 h-3 rounded-full bg-cyan-500" />
+                Cara Pengukuran
+              </label>
+
+              <div className="col-span-9 relative">
+                <Ruler
+                  size={21}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 text-slate-400"
+                />
+
+                <select
+                  name="cara_pengukuran"
+                  defaultValue={periksa?.cara_pengukuran ?? ""}
+                  className="
                                 w-full
                                 h-[50px]
                                 rounded-[5px]
@@ -466,46 +454,39 @@ const [asiEksklusif, setAsiEksklusif] =
                                 focus:border-cyan-500
                                 transition
                               "
-                            >
-                              <option>Terlentang</option>
-                              <option>Berdiri</option>
-                            </select>
-                          </div>
-                        </div>
+                >
+                  <option>Terlentang</option>
+                  <option>Berdiri</option>
+                </select>
+              </div>
+            </div>
           </div>
 
-<div className="space-y-3">
-  <label className="flex items-center gap-3 text-[17px] font-medium text-slate-800">
-    <div className="h-3 w-3 rounded-full bg-cyan-500" />
-    ASI Eksklusif
-  </label>
+          <div className="space-y-3">
+            <label className="flex items-center gap-3 text-[17px] font-medium text-slate-800">
+              <div className="h-3 w-3 rounded-full bg-cyan-500" />
+              ASI Eksklusif
+            </label>
 
-  <div className="flex flex-wrap gap-5 text-black">
-    {bulanASI.map((bulan) => (
-      <label
-        key={bulan}
-        className="flex items-center gap-2"
-      >
-        <input
-          type="radio"
-          name="asi_eksklusif"
-          value={bulan}
-          checked={asiEksklusif === String(bulan)}
-          onChange={(e) =>
-            setAsiEksklusif(e.target.value)
-          }
-        />
+            <div className="flex flex-wrap gap-5 text-black">
+              {bulanASI.map((bulan) => (
+                <label key={bulan} className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="asi_eksklusif"
+                    value={bulan}
+                    checked={asiEksklusif === String(bulan)}
+                    onChange={(e) => setAsiEksklusif(e.target.value)}
+                  />
+                  {bulan} Bulan
+                </label>
+              ))}
+            </div>
 
-        {bulan} Bulan
-      </label>
-    ))}
-  </div>
-
-  <p className="text-sm text-gray-500">
-    Kosongkan apabila anak tidak mendapatkan
-    ASI Eksklusif.
-  </p>
-</div>
+            <p className="text-sm text-gray-500">
+              Kosongkan apabila anak tidak mendapatkan ASI Eksklusif.
+            </p>
+          </div>
 
           <input
             type="hidden"
@@ -516,14 +497,12 @@ const [asiEksklusif, setAsiEksklusif] =
       </div>
 
       {/* FOOTER BUTTON */}
-<div className="flex items-center justify-center gap-4 py-4">
-  {/* BATAL */}
-  <button
-    type="button"
-    onClick={() =>
-      router.push("/admin/dashboard/data-pemeriksaan")
-    }
-    className="
+      <div className="flex items-center justify-center gap-4 py-4">
+        {/* BATAL */}
+        <button
+          type="button"
+          onClick={() => router.push("/admin/dashboard/data-pemeriksaan")}
+          className="
       flex h-10 items-center justify-center
       rounded-lg px-5
       border border-cyan-500
@@ -533,15 +512,15 @@ const [asiEksklusif, setAsiEksklusif] =
       transition-all duration-200
       hover:bg-cyan-50
     "
-  >
-    <X size={18} className="mr-2" />
-    Batal
-  </button>
+        >
+          <X size={18} className="mr-2" />
+          Batal
+        </button>
 
-  {/* SIMPAN / UPDATE */}
-  <button
-    type="submit"
-    className="
+        {/* SIMPAN / UPDATE */}
+        <button
+          type="submit"
+          className="
       flex h-10 items-center justify-center
       rounded-lg px-5
       bg-cyan-600
@@ -550,11 +529,11 @@ const [asiEksklusif, setAsiEksklusif] =
       transition-all duration-200
       hover:bg-cyan-700
     "
-  >
-    <Save size={18} className="mr-2" />
-    {mode === "create" ? "Simpan Data" : "Update Data"}
-  </button>
-</div>
+        >
+          <Save size={18} className="mr-2" />
+          {mode === "create" ? "Simpan Data" : "Update Data"}
+        </button>
+      </div>
     </form>
   );
 }

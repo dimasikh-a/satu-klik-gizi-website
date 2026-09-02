@@ -1,0 +1,29 @@
+{
+  "node": {
+    "0098d40b7f0d0d1c7500a2171de879297f9782508a": {
+      "workers": {
+        "app/admin/dashboard/data-balita/edit/[id]/page": {
+          "moduleId": 37932,
+          "async": true,
+          "exportedName": "logoutAction",
+          "filename": "src/features/landing/auth/form/logout.ts"
+        }
+      },
+      "exportedName": "logoutAction",
+      "filename": "src/features/landing/auth/form/logout.ts"
+    },
+    "705de601f8280ecf472cfa71185966cd73befc930f": {
+      "workers": {
+        "app/admin/dashboard/data-balita/edit/[id]/page": {
+          "moduleId": 37932,
+          "async": true,
+          "exportedName": "updateBalita",
+          "filename": "src/features/balita/update-balita.ts"
+        }
+      },
+      "exportedName": "updateBalita",
+      "filename": "src/features/balita/update-balita.ts"
+    }
+  },
+  "edge": {}
+}

@@ -1,0 +1,29 @@
+{
+  "node": {
+    "0098d40b7f0d0d1c7500a2171de879297f9782508a": {
+      "workers": {
+        "app/admin/dashboard/data-balita/page": {
+          "moduleId": 17714,
+          "async": true,
+          "exportedName": "logoutAction",
+          "filename": "src/features/landing/auth/form/logout.ts"
+        }
+      },
+      "exportedName": "logoutAction",
+      "filename": "src/features/landing/auth/form/logout.ts"
+    },
+    "4032a79a77d8d8148f5a71e97d96a555a7205cecb8": {
+      "workers": {
+        "app/admin/dashboard/data-balita/page": {
+          "moduleId": 17714,
+          "async": true,
+          "exportedName": "deleteBalita",
+          "filename": "src/features/balita/delete-balita.ts"
+        }
+      },
+      "exportedName": "deleteBalita",
+      "filename": "src/features/balita/delete-balita.ts"
+    }
+  },
+  "edge": {}
+}

@@ -1,0 +1,29 @@
+{
+  "node": {
+    "0098d40b7f0d0d1c7500a2171de879297f9782508a": {
+      "workers": {
+        "app/admin/dashboard/data-user/edit/[id]/page": {
+          "moduleId": 72872,
+          "async": true,
+          "exportedName": "logoutAction",
+          "filename": "src/features/landing/auth/form/logout.ts"
+        }
+      },
+      "exportedName": "logoutAction",
+      "filename": "src/features/landing/auth/form/logout.ts"
+    },
+    "70efb2edac9c111211d97158af99ebea8f05fd6624": {
+      "workers": {
+        "app/admin/dashboard/data-user/edit/[id]/page": {
+          "moduleId": 72872,
+          "async": true,
+          "exportedName": "updateUser",
+          "filename": "src/features/users/update-user.ts"
+        }
+      },
+      "exportedName": "updateUser",
+      "filename": "src/features/users/update-user.ts"
+    }
+  },
+  "edge": {}
+}

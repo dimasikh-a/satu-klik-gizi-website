@@ -1,0 +1,29 @@
+{
+  "node": {
+    "0098d40b7f0d0d1c7500a2171de879297f9782508a": {
+      "workers": {
+        "app/admin/dashboard/data-rekomendasi/edit/[id]/page": {
+          "moduleId": 82144,
+          "async": true,
+          "exportedName": "logoutAction",
+          "filename": "src/features/landing/auth/form/logout.ts"
+        }
+      },
+      "exportedName": "logoutAction",
+      "filename": "src/features/landing/auth/form/logout.ts"
+    },
+    "708c888cad2c4681aaa0ddf2c49e04d9d3c004e424": {
+      "workers": {
+        "app/admin/dashboard/data-rekomendasi/edit/[id]/page": {
+          "moduleId": 82144,
+          "async": true,
+          "exportedName": "createRekomendasi",
+          "filename": "src/features/rekomendasi/save-recommendation.ts"
+        }
+      },
+      "exportedName": "createRekomendasi",
+      "filename": "src/features/rekomendasi/save-recommendation.ts"
+    }
+  },
+  "edge": {}
+}

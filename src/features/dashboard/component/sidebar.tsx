@@ -2,7 +2,6 @@
 
 "use client";
 import unm from "../../../../public/logo universitas nusa mandiri.png";
-import kementrian from "../../../../public/Logo Kementerian Pendidikan Tinggi, Sains dan Teknologi-2.png";
 import { logoutAction } from "@/features/landing/auth/form/logout";
 import bima from "../../../../public/logo bima.png";
 import Image from "next/image";
@@ -18,7 +17,7 @@ import {
   ClipboardList,
   Star,
   Stethoscope,
-  FileText
+  FileText,
 } from "lucide-react";
 
 type Props = {
@@ -83,7 +82,9 @@ export default function Sidebar({ status }: Props) {
       {/* Logo */}
       <div className="flex items-center justify-center gap-3">
         <Image
-          src={kementrian}
+          src="/logo-kementerian.png"
+          width={40}
+          height={40}
           alt="logo"
           className="w-10 h-10 object-contain"
         />

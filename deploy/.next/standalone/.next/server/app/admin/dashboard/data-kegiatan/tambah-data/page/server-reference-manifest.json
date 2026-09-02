@@ -1,0 +1,29 @@
+{
+  "node": {
+    "0098d40b7f0d0d1c7500a2171de879297f9782508a": {
+      "workers": {
+        "app/admin/dashboard/data-kegiatan/tambah-data/page": {
+          "moduleId": 21919,
+          "async": true,
+          "exportedName": "logoutAction",
+          "filename": "src/features/landing/auth/form/logout.ts"
+        }
+      },
+      "exportedName": "logoutAction",
+      "filename": "src/features/landing/auth/form/logout.ts"
+    },
+    "609b506246d8231dbc91c6d1ef2cce00878d4b2bcf": {
+      "workers": {
+        "app/admin/dashboard/data-kegiatan/tambah-data/page": {
+          "moduleId": 21919,
+          "async": true,
+          "exportedName": "createActivity",
+          "filename": "src/features/kegiatan/create-activity.ts"
+        }
+      },
+      "exportedName": "createActivity",
+      "filename": "src/features/kegiatan/create-activity.ts"
+    }
+  },
+  "edge": {}
+}

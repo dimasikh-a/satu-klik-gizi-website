@@ -1,0 +1,29 @@
+{
+  "node": {
+    "0098d40b7f0d0d1c7500a2171de879297f9782508a": {
+      "workers": {
+        "app/admin/dashboard/data-orang-tua/tambah-data/page": {
+          "moduleId": 49236,
+          "async": true,
+          "exportedName": "logoutAction",
+          "filename": "src/features/landing/auth/form/logout.ts"
+        }
+      },
+      "exportedName": "logoutAction",
+      "filename": "src/features/landing/auth/form/logout.ts"
+    },
+    "60d95a245990b7b45a471b034b3767af75364e1ea6": {
+      "workers": {
+        "app/admin/dashboard/data-orang-tua/tambah-data/page": {
+          "moduleId": 49236,
+          "async": true,
+          "exportedName": "createDataIbu",
+          "filename": "src/features/orang-tua/create-parent.ts"
+        }
+      },
+      "exportedName": "createDataIbu",
+      "filename": "src/features/orang-tua/create-parent.ts"
+    }
+  },
+  "edge": {}
+}

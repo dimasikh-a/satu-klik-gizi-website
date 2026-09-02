@@ -1,0 +1,224 @@
+{
+  "version": 3,
+  "pages404": true,
+  "appType": "app",
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "priority": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [],
+  "onMatchHeaders": [],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [
+    {
+      "page": "/admin/dashboard/data-balita/edit/[id]",
+      "regex": "^/admin/dashboard/data\\-balita/edit/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/admin/dashboard/data\\-balita/edit/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/admin/dashboard/data-orang-tua/edit/[nokk]",
+      "regex": "^/admin/dashboard/data\\-orang\\-tua/edit/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPnokk": "nxtPnokk"
+      },
+      "namedRegex": "^/admin/dashboard/data\\-orang\\-tua/edit/(?<nxtPnokk>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/admin/dashboard/data-pemeriksaan/edit/[id]",
+      "regex": "^/admin/dashboard/data\\-pemeriksaan/edit/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/admin/dashboard/data\\-pemeriksaan/edit/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/admin/dashboard/data-rekomendasi/edit/[id]",
+      "regex": "^/admin/dashboard/data\\-rekomendasi/edit/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/admin/dashboard/data\\-rekomendasi/edit/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/admin/dashboard/data-user/edit/[id]",
+      "regex": "^/admin/dashboard/data\\-user/edit/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/admin/dashboard/data\\-user/edit/(?<nxtPid>[^/]+?)(?:/)?$"
+    }
+  ],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_global-error",
+      "regex": "^/_global\\-error(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_global\\-error(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/admin/dashboard",
+      "regex": "^/admin/dashboard(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/dashboard(?:/)?$"
+    },
+    {
+      "page": "/admin/dashboard/data-balita",
+      "regex": "^/admin/dashboard/data\\-balita(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/dashboard/data\\-balita(?:/)?$"
+    },
+    {
+      "page": "/admin/dashboard/data-balita/tambah-data",
+      "regex": "^/admin/dashboard/data\\-balita/tambah\\-data(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/dashboard/data\\-balita/tambah\\-data(?:/)?$"
+    },
+    {
+      "page": "/admin/dashboard/data-kegiatan",
+      "regex": "^/admin/dashboard/data\\-kegiatan(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/dashboard/data\\-kegiatan(?:/)?$"
+    },
+    {
+      "page": "/admin/dashboard/data-kegiatan/tambah-data",
+      "regex": "^/admin/dashboard/data\\-kegiatan/tambah\\-data(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/dashboard/data\\-kegiatan/tambah\\-data(?:/)?$"
+    },
+    {
+      "page": "/admin/dashboard/data-orang-tua",
+      "regex": "^/admin/dashboard/data\\-orang\\-tua(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/dashboard/data\\-orang\\-tua(?:/)?$"
+    },
+    {
+      "page": "/admin/dashboard/data-orang-tua/tambah-data",
+      "regex": "^/admin/dashboard/data\\-orang\\-tua/tambah\\-data(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/dashboard/data\\-orang\\-tua/tambah\\-data(?:/)?$"
+    },
+    {
+      "page": "/admin/dashboard/data-pemeriksaan",
+      "regex": "^/admin/dashboard/data\\-pemeriksaan(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/dashboard/data\\-pemeriksaan(?:/)?$"
+    },
+    {
+      "page": "/admin/dashboard/data-pemeriksaan/tambah-data",
+      "regex": "^/admin/dashboard/data\\-pemeriksaan/tambah\\-data(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/dashboard/data\\-pemeriksaan/tambah\\-data(?:/)?$"
+    },
+    {
+      "page": "/admin/dashboard/data-rekomendasi",
+      "regex": "^/admin/dashboard/data\\-rekomendasi(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/dashboard/data\\-rekomendasi(?:/)?$"
+    },
+    {
+      "page": "/admin/dashboard/data-user",
+      "regex": "^/admin/dashboard/data\\-user(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/dashboard/data\\-user(?:/)?$"
+    },
+    {
+      "page": "/admin/dashboard/data-user/tambah-data",
+      "regex": "^/admin/dashboard/data\\-user/tambah\\-data(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/dashboard/data\\-user/tambah\\-data(?:/)?$"
+    },
+    {
+      "page": "/admin/dashboard/laporan",
+      "regex": "^/admin/dashboard/laporan(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/dashboard/laporan(?:/)?$"
+    },
+    {
+      "page": "/agenda",
+      "regex": "^/agenda(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/agenda(?:/)?$"
+    },
+    {
+      "page": "/home",
+      "regex": "^/home(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/home(?:/)?$"
+    },
+    {
+      "page": "/layanan",
+      "regex": "^/layanan(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/layanan(?:/)?$"
+    },
+    {
+      "page": "/login",
+      "regex": "^/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/login(?:/)?$"
+    },
+    {
+      "page": "/login/lupa_password",
+      "regex": "^/login/lupa_password(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/login/lupa_password(?:/)?$"
+    },
+    {
+      "page": "/statistik",
+      "regex": "^/statistik(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/statistik(?:/)?$"
+    },
+    {
+      "page": "/Unauthorized",
+      "regex": "^/Unauthorized(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/Unauthorized(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments",
+    "clientParamParsing": false,
+    "dynamicRSCPrerender": false
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}

@@ -1,5 +1,6 @@
 import weightForAge from "../../src/engine/data/weight-for-age.json";
 import lengthForAge from "../../src/engine/data/length-for-age.json";
+import heightForAge from "../../src/engine/data/height-for-age.json";
 
 import weightForLengthBoys from "../../src/engine/data/weight-for-length-boys.json";
 import weightForLengthGirls from "../../src/engine/data/weight-for-length-girls.json";
@@ -24,6 +25,9 @@ export interface WHOReference {
 class WHOService {
   /**
    * Normalisasi gender
+   *
+   * Laki-laki → L
+   * Perempuan → P
    */
   normalizeGender(gender: string): "L" | "P" {
     const value = gender.trim().toLowerCase();
@@ -39,38 +43,65 @@ class WHOService {
         return "P";
 
       default:
-        throw new Error(`Gender tidak valid: ${gender}`);
+        throw new Error(
+          `Gender tidak valid: ${gender}`
+        );
     }
   }
 
   /**
-   * Membulatkan tinggi ke interval 0.5 cm
-   * Contoh:
-   * 70.1 -> 70.0
-   * 70.3 -> 70.5
+   * Mencari reference terdekat berdasarkan tinggi.
+   *
+   * Digunakan untuk:
+   * - BB/PB
+   * - BB/TB
    */
-private findNearestReference<T extends { height?: number }>(
-  dataset: T[],
-  height: number
-): T | undefined {
-  if (dataset.length === 0) return undefined;
+  private findNearestReference<
+    T extends { height?: number }
+  >(
+    dataset: T[],
+    height: number
+  ): T | undefined {
+    if (dataset.length === 0) {
+      return undefined;
+    }
 
-  return dataset.reduce((closest, current) => {
-    if (closest.height === undefined) return current;
-    if (current.height === undefined) return closest;
+    return dataset.reduce((closest, current) => {
+      if (closest.height === undefined) {
+        return current;
+      }
 
-    const currentDiff = Math.abs(current.height - height);
-    const closestDiff = Math.abs(closest.height - height);
+      if (current.height === undefined) {
+        return closest;
+      }
 
-    return currentDiff < closestDiff ? current : closest;
-  });
-}
+      const currentDiff = Math.abs(
+        current.height - height
+      );
+
+      const closestDiff = Math.abs(
+        closest.height - height
+      );
+
+      return currentDiff < closestDiff
+        ? current
+        : closest;
+    });
+  }
 
   /**
+   * ==========================================
    * BB/U
+   * ==========================================
+   *
+   * Weight-for-Age
    */
-  getWeightReference(gender: string, umur: number) {
-    const normalizedGender = this.normalizeGender(gender);
+  getWeightReference(
+    gender: string,
+    umur: number
+  ) {
+    const normalizedGender =
+      this.normalizeGender(gender);
 
     return weightForAge.find(
       (item) =>
@@ -80,10 +111,20 @@ private findNearestReference<T extends { height?: number }>(
   }
 
   /**
-   * TB/U
+   * ==========================================
+   * TB/U - LENGTH
+   * ==========================================
+   *
+   * Length-for-Age
+   *
+   * Digunakan untuk umur < 24 bulan.
    */
-  getLengthReference(gender: string, umur: number) {
-    const normalizedGender = this.normalizeGender(gender);
+  getLengthReference(
+    gender: string,
+    umur: number
+  ) {
+    const normalizedGender =
+      this.normalizeGender(gender);
 
     return lengthForAge.find(
       (item) =>
@@ -93,55 +134,154 @@ private findNearestReference<T extends { height?: number }>(
   }
 
   /**
-   * Mengambil dataset BB/PB berdasarkan gender
+   * ==========================================
+   * TB/U - HEIGHT
+   * ==========================================
+   *
+   * Height-for-Age
+   *
+   * Digunakan untuk umur >= 24 bulan.
    */
-  private getWeightForLengthDataset(gender: "L" | "P") {
+  getHeightReference(
+    gender: string,
+    umur: number
+  ) {
+    const normalizedGender =
+      this.normalizeGender(gender);
+
+    return heightForAge.find(
+      (item) =>
+        item.gender === normalizedGender &&
+        item.umur === umur
+    );
+  }
+
+  /**
+   * ==========================================
+   * TB/U - LENGTH / HEIGHT
+   * ==========================================
+   *
+   * Menentukan dataset TB/U berdasarkan umur.
+   *
+   * < 24 bulan
+   * → Length-for-Age
+   *
+   * >= 24 bulan
+   * → Height-for-Age
+   */
+  getLengthOrHeightReference(
+    gender: string,
+    umurBulan: number
+  ) {
+    if (umurBulan < 24) {
+      return this.getLengthReference(
+        gender,
+        umurBulan
+      );
+    }
+
+    return this.getHeightReference(
+      gender,
+      umurBulan
+    );
+  }
+
+  /**
+   * ==========================================
+   * DATASET BB/PB
+   * ==========================================
+   *
+   * Mengambil dataset berdasarkan gender.
+   */
+  private getWeightForLengthDataset(
+    gender: "L" | "P"
+  ) {
     return gender === "L"
       ? weightForLengthBoys
       : weightForLengthGirls;
   }
 
   /**
-   * Mengambil dataset BB/TB berdasarkan gender
+   * ==========================================
+   * DATASET BB/TB
+   * ==========================================
+   *
+   * Mengambil dataset berdasarkan gender.
    */
-  private getWeightForHeightDataset(gender: "L" | "P") {
+  private getWeightForHeightDataset(
+    gender: "L" | "P"
+  ) {
     return gender === "L"
       ? weightForHeightBoys
       : weightForHeightGirls;
   }
 
   /**
-   * BB/PB (0-24 bulan)
+   * ==========================================
+   * BB/PB
+   * ==========================================
+   *
+   * Weight-for-Length
+   *
+   * Digunakan untuk anak < 24 bulan.
    */
-getWeightForLengthReference(
-  gender: string,
-  tinggi: number
-) {
-  const normalizedGender = this.normalizeGender(gender);
+  getWeightForLengthReference(
+    gender: string,
+    tinggi: number
+  ) {
+    const normalizedGender =
+      this.normalizeGender(gender);
 
-  const dataset =
-    this.getWeightForLengthDataset(normalizedGender);
+    const dataset =
+      this.getWeightForLengthDataset(
+        normalizedGender
+      );
 
-  return this.findNearestReference(dataset, tinggi);
-}
+    return this.findNearestReference(
+      dataset,
+      tinggi
+    );
+  }
 
   /**
-   * BB/TB (24-60 bulan)
+   * ==========================================
+   * BB/TB
+   * ==========================================
+   *
+   * Weight-for-Height
+   *
+   * Digunakan untuk anak >= 24 bulan.
    */
-getWeightForHeightReference(
-  gender: string,
-  tinggi: number
-) {
-  const normalizedGender = this.normalizeGender(gender);
+  getWeightForHeightReference(
+    gender: string,
+    tinggi: number
+  ) {
+    const normalizedGender =
+      this.normalizeGender(gender);
 
-  const dataset =
-    this.getWeightForHeightDataset(normalizedGender);
+    const dataset =
+      this.getWeightForHeightDataset(
+        normalizedGender
+      );
 
-  return this.findNearestReference(dataset, tinggi);
-}
+    return this.findNearestReference(
+      dataset,
+      tinggi
+    );
+  }
 
   /**
-   * Menentukan referensi BB/PB atau BB/TB berdasarkan umur
+   * ==========================================
+   * BB/PB atau BB/TB
+   * ==========================================
+   *
+   * Menentukan dataset berdasarkan umur.
+   *
+   * < 24 bulan
+   * → BB/PB
+   *
+   * >= 24 bulan
+   * → BB/TB
    */
   getWeightForLengthOrHeightReference(
     gender: string,

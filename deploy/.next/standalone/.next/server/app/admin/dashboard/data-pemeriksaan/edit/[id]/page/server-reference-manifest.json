@@ -1,0 +1,29 @@
+{
+  "node": {
+    "0098d40b7f0d0d1c7500a2171de879297f9782508a": {
+      "workers": {
+        "app/admin/dashboard/data-pemeriksaan/edit/[id]/page": {
+          "moduleId": 1892,
+          "async": true,
+          "exportedName": "logoutAction",
+          "filename": "src/features/landing/auth/form/logout.ts"
+        }
+      },
+      "exportedName": "logoutAction",
+      "filename": "src/features/landing/auth/form/logout.ts"
+    },
+    "70aba8e1e17f4f87cfd81378c5b301b184bff19c06": {
+      "workers": {
+        "app/admin/dashboard/data-pemeriksaan/edit/[id]/page": {
+          "moduleId": 1892,
+          "async": true,
+          "exportedName": "updatePemeriksaan",
+          "filename": "src/features/pemeriksaan/update-pemeriksaan.ts"
+        }
+      },
+      "exportedName": "updatePemeriksaan",
+      "filename": "src/features/pemeriksaan/update-pemeriksaan.ts"
+    }
+  },
+  "edge": {}
+}

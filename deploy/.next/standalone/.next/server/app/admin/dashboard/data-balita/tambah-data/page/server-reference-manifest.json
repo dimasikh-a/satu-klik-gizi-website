@@ -1,0 +1,29 @@
+{
+  "node": {
+    "0098d40b7f0d0d1c7500a2171de879297f9782508a": {
+      "workers": {
+        "app/admin/dashboard/data-balita/tambah-data/page": {
+          "moduleId": 51572,
+          "async": true,
+          "exportedName": "logoutAction",
+          "filename": "src/features/landing/auth/form/logout.ts"
+        }
+      },
+      "exportedName": "logoutAction",
+      "filename": "src/features/landing/auth/form/logout.ts"
+    },
+    "60af25080c3c01726c372ae5f2e4c6393be920b811": {
+      "workers": {
+        "app/admin/dashboard/data-balita/tambah-data/page": {
+          "moduleId": 51572,
+          "async": true,
+          "exportedName": "createBalita",
+          "filename": "src/features/balita/create-balita.ts"
+        }
+      },
+      "exportedName": "createBalita",
+      "filename": "src/features/balita/create-balita.ts"
+    }
+  },
+  "edge": {}
+}

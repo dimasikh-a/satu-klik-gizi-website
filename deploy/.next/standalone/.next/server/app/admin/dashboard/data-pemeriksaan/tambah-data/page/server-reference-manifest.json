@@ -1,0 +1,29 @@
+{
+  "node": {
+    "0098d40b7f0d0d1c7500a2171de879297f9782508a": {
+      "workers": {
+        "app/admin/dashboard/data-pemeriksaan/tambah-data/page": {
+          "moduleId": 57865,
+          "async": true,
+          "exportedName": "logoutAction",
+          "filename": "src/features/landing/auth/form/logout.ts"
+        }
+      },
+      "exportedName": "logoutAction",
+      "filename": "src/features/landing/auth/form/logout.ts"
+    },
+    "60998de91db0e09f4b7847040094d5a0cb09c6de77": {
+      "workers": {
+        "app/admin/dashboard/data-pemeriksaan/tambah-data/page": {
+          "moduleId": 57865,
+          "async": true,
+          "exportedName": "createPemeriksaan",
+          "filename": "src/features/pemeriksaan/create-pemeriksaan.ts"
+        }
+      },
+      "exportedName": "createPemeriksaan",
+      "filename": "src/features/pemeriksaan/create-pemeriksaan.ts"
+    }
+  },
+  "edge": {}
+}

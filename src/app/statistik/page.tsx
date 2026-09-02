@@ -3,7 +3,7 @@ import FooterBanner from "@/features/landing/component/footer"
 import StatistikSection from "@/features/landing/sections/statistik-section"
 import { db } from "@/lib/db";
 
-
+export const dynamic = "force-dynamic";
 export default async function StatistikPage () {
 const pemeriksaan = await db.pemeriksaan.findMany({
     where: {

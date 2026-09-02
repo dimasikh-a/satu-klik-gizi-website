@@ -1,0 +1,29 @@
+{
+  "node": {
+    "0098d40b7f0d0d1c7500a2171de879297f9782508a": {
+      "workers": {
+        "app/admin/dashboard/data-kegiatan/page": {
+          "moduleId": 62841,
+          "async": true,
+          "exportedName": "logoutAction",
+          "filename": "src/features/landing/auth/form/logout.ts"
+        }
+      },
+      "exportedName": "logoutAction",
+      "filename": "src/features/landing/auth/form/logout.ts"
+    },
+    "40fe045a7ae2fe922b69c2893169bfe3d716911ca6": {
+      "workers": {
+        "app/admin/dashboard/data-kegiatan/page": {
+          "moduleId": 62841,
+          "async": true,
+          "exportedName": "deleteActivity",
+          "filename": "src/features/kegiatan/delete-activity.ts"
+        }
+      },
+      "exportedName": "deleteActivity",
+      "filename": "src/features/kegiatan/delete-activity.ts"
+    }
+  },
+  "edge": {}
+}

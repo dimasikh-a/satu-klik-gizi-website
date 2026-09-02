@@ -3,11 +3,12 @@
 import Image from "next/image";
 import nusamandiri from "../../../../public/logo universitas nusa mandiri.png";
 import bima from "../../../../public/logo bima.png";
-import kementrian from "../../../../public/Logo Kementerian Pendidikan Tinggi, Sains dan Teknologi-2.png";
 import { Lock, Phone, Eye, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 export default function LupaPasswordSection() {
+const kementrian = "/kementrian-logo.png";
+
   return (
     <>
       <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-cyan-50 via-white to-slate-100 px-4 pb-10 pt-[140px] font-mono md:px-4 md:pb-[50px] md:pt-[160px]">
